@@ -3,6 +3,7 @@ const ADMIN_PASSWORD = 'tudor-admin-123';
 
 const state = {
   loggedIn: false,
+  editorBound: false,
   config: {
     siteTitle: '',
     siteSubtitle: '',
@@ -134,6 +135,12 @@ function renderGallery() {
   byId('gallery-list').innerHTML = state.gallery.map(galleryTemplate).join('');
 }
 
+function renderEditors() {
+  configToDom();
+  renderRooms();
+  renderGallery();
+}
+
 function collectCardData(selector) {
   return Array.from(document.querySelectorAll(selector)).map((card) => {
     const payload = {};
@@ -240,6 +247,12 @@ async function saveAll() {
 }
 
 function bindEditorEvents() {
+  if (state.editorBound) {
+    return;
+  }
+
+  state.editorBound = true;
+
   byId('add-room-btn').addEventListener('click', () => {
     state.rooms.push({ slug: '', name: '', capacity: '', price: '', image: '', description: '' });
     renderRooms();
@@ -334,12 +347,10 @@ async function loadDashboard() {
     state.rooms = rooms;
     state.gallery = gallery;
 
-    configToDom();
-    renderRooms();
-    renderGallery();
-    bindEditorEvents();
+    renderEditors();
     showStatus('Loaded data from GitHub.');
   } catch (error) {
+    renderEditors();
     showStatus(error.message, true);
   }
 }
@@ -359,6 +370,7 @@ function login() {
 }
 
 function init() {
+  bindEditorEvents();
   byId('login-btn').addEventListener('click', login);
   byId('admin-password').addEventListener('keydown', (event) => {
     if (event.key === 'Enter') login();
