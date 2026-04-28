@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "tudor-hill-view",
+    "name": "Tudor Hill View Cottage",
+    "description": "A bright wooden cottage overlooking tea rows and valley mist, ideal for couples and quiet work retreats.",
+    "price": "From INR 4,500 / night",
+    "capacity": "2 Guests",
+    "image": "https://images.unsplash.com/photo-1499696010181-025ef6e1a8f9?auto=format&fit=crop&w=1400&q=80"
+  },
+  {
+    "slug": "tea-garden-family-suite",
+    "name": "Tea Garden Family Suite",
+    "description": "Spacious family cottage with warm interiors, private sit-out, and panoramic sunrise views over Rohini slopes.",
+    "price": "From INR 6,800 / night",
+    "capacity": "4 Guests",
+    "image": "https://images.unsplash.com/photo-1472224371017-08207f84aaae?auto=format&fit=crop&w=1400&q=80"
+  },
+  {
+    "slug": "cedar-attic-room",
+    "name": "Cedar Attic Room",
+    "description": "Cozy attic-style room with handcrafted decor, mountain chill, and easy access to walking trails.",
+    "price": "From INR 3,900 / night",
+    "capacity": "2 Guests",
+    "image": "https://images.unsplash.com/photo-1617104551722-3b2d5136640d?auto=format&fit=crop&w=1400&q=80"
+  }
+]

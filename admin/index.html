@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tudor Farm Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: 'Manrope', sans-serif;
+        background:
+          radial-gradient(circle at 0 0, rgba(86, 122, 91, 0.2), transparent 50%),
+          linear-gradient(180deg, #f8f6ef, #efece3);
+      }
+
+      .toast {
+        opacity: 0;
+        transform: translateY(8px);
+        animation: toastIn 0.25s ease forwards;
+      }
+
+      @keyframes toastIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen p-4 sm:p-6">
+    <div class="mx-auto max-w-5xl">
+      <header class="mb-6 rounded-2xl border border-stone-200 bg-white/85 p-5 shadow-sm">
+        <h1 class="text-2xl font-bold text-emerald-900">Tudor Farm Admin Panel</h1>
+        <p class="mt-1 text-sm text-stone-600">
+          Manage rooms and gallery content. Changes are committed to GitHub JSON files.
+        </p>
+      </header>
+
+      <section id="login-section" class="rounded-2xl border border-stone-200 bg-white/85 p-5 shadow-sm">
+        <h2 class="text-lg font-semibold text-stone-800">Login</h2>
+        <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter admin password"
+            class="w-full rounded-xl border border-stone-300 px-4 py-2 text-sm focus:border-emerald-700 focus:outline-none"
+          />
+          <button
+            id="login-btn"
+            class="rounded-xl bg-emerald-800 px-5 py-2 text-sm font-semibold text-white hover:bg-emerald-900"
+          >
+            Login
+          </button>
+        </div>
+        <p id="login-error" class="mt-3 text-sm text-red-700"></p>
+      </section>
+
+      <section id="cms-section" class="hidden space-y-6">
+        <div class="rounded-2xl border border-stone-200 bg-white/85 p-5 shadow-sm">
+          <div class="flex items-center justify-between gap-3">
+            <h2 class="text-xl font-semibold text-stone-800">Rooms</h2>
+            <button id="add-room" class="rounded-xl bg-stone-900 px-4 py-2 text-sm font-semibold text-white">
+              Add Room
+            </button>
+          </div>
+          <div id="rooms-editor" class="mt-4 space-y-4"></div>
+          <button id="save-rooms" class="mt-5 rounded-xl bg-emerald-700 px-5 py-2 text-sm font-semibold text-white">
+            Save Rooms
+          </button>
+        </div>
+
+        <div class="rounded-2xl border border-stone-200 bg-white/85 p-5 shadow-sm">
+          <div class="flex items-center justify-between gap-3">
+            <h2 class="text-xl font-semibold text-stone-800">Gallery</h2>
+            <button id="add-gallery" class="rounded-xl bg-stone-900 px-4 py-2 text-sm font-semibold text-white">
+              Add Image
+            </button>
+          </div>
+          <div id="gallery-editor" class="mt-4 space-y-4"></div>
+          <button id="save-gallery" class="mt-5 rounded-xl bg-emerald-700 px-5 py-2 text-sm font-semibold text-white">
+            Save Gallery
+          </button>
+        </div>
+
+        <p id="status" class="rounded-xl border border-stone-200 bg-white/85 p-3 text-sm text-stone-700"></p>
+      </section>
+
+      <div id="toast-stack" class="pointer-events-none fixed bottom-4 right-4 z-50 flex w-[90%] max-w-sm flex-col gap-2"></div>
+    </div>
+
+    <script>
+      const GITHUB_RAW_BASE =
+        'https://raw.githubusercontent.com/YOUR_GITHUB_OWNER/YOUR_REPO/main/data';
+      const ADMIN_PASSWORD = 'tudor-admin-123';
+
+      const state = {
+        rooms: [],
+        gallery: []
+      };
+
+      function byId(id) {
+        return document.getElementById(id);
+      }
+
+      function showToast(text, type = 'success') {
+        const stack = byId('toast-stack');
+        const toast = document.createElement('div');
+        const baseClass = 'toast rounded-xl border px-4 py-3 text-sm font-medium shadow-lg';
+        toast.className =
+          type === 'error'
+            ? `${baseClass} border-red-200 bg-red-50 text-red-800`
+            : `${baseClass} border-emerald-200 bg-emerald-50 text-emerald-800`;
+        toast.textContent = text;
+        stack.appendChild(toast);
+        setTimeout(() => {
+          toast.remove();
+        }, 2800);
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#39;');
+      }
+
+      async function fetchJson(fileName) {
+        const response = await fetch(`${GITHUB_RAW_BASE}/${fileName}`, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`Could not fetch ${fileName}`);
+        return response.json();
+      }
+
+      function roomCard(room, index) {
+        return `
+          <div class="rounded-xl border border-stone-200 p-4" data-room-index="${index}">
+            <div class="grid gap-3 sm:grid-cols-2">
+              <input class="rounded-lg border border-stone-300 px-3 py-2 text-sm" data-field="name" value="${escapeHtml(room.name || '')}" placeholder="Room name" />
+              <input class="rounded-lg border border-stone-300 px-3 py-2 text-sm" data-field="capacity" value="${escapeHtml(room.capacity || '')}" placeholder="Capacity" />
+              <input class="rounded-lg border border-stone-300 px-3 py-2 text-sm sm:col-span-2" data-field="image" value="${escapeHtml(room.image || '')}" placeholder="Image URL" />
+              <input class="rounded-lg border border-stone-300 px-3 py-2 text-sm" data-field="price" value="${escapeHtml(room.price || '')}" placeholder="Price text" />
+              <input class="rounded-lg border border-stone-300 px-3 py-2 text-sm" data-field="slug" value="${escapeHtml(room.slug || '')}" placeholder="Slug" />
+              <textarea class="rounded-lg border border-stone-300 px-3 py-2 text-sm sm:col-span-2" data-field="description" rows="3" placeholder="Description">${escapeHtml(room.description || '')}</textarea>
+            </div>
+            <button class="mt-3 rounded-lg bg-red-700 px-3 py-1.5 text-xs font-semibold text-white" data-action="delete-room">Delete</button>
+          </div>
+        `;
+      }
+
+      function galleryCard(image, index) {
+        return `
+          <div class="rounded-xl border border-stone-200 p-4" data-gallery-index="${index}">
+            <div class="grid gap-3 sm:grid-cols-2">
+              <input class="rounded-lg border border-stone-300 px-3 py-2 text-sm sm:col-span-2" data-field="url" value="${escapeHtml(image.url || '')}" placeholder="Image URL" />
+              <input class="rounded-lg border border-stone-300 px-3 py-2 text-sm sm:col-span-2" data-field="alt" value="${escapeHtml(image.alt || '')}" placeholder="Alt text" />
+            </div>
+            <button class="mt-3 rounded-lg bg-red-700 px-3 py-1.5 text-xs font-semibold text-white" data-action="delete-gallery">Delete</button>
+          </div>
+        `;
+      }
+
+      function renderRoomsEditor() {
+        byId('rooms-editor').innerHTML = state.rooms.map(roomCard).join('');
+      }
+
+      function renderGalleryEditor() {
+        byId('gallery-editor').innerHTML = state.gallery.map(galleryCard).join('');
+      }
+
+      function collectRoomsFromDom() {
+        const cards = document.querySelectorAll('[data-room-index]');
+        return Array.from(cards).map((card) => {
+          const fields = card.querySelectorAll('[data-field]');
+          const obj = {};
+          fields.forEach((field) => {
+            obj[field.dataset.field] = field.value.trim();
+          });
+          return obj;
+        });
+      }
+
+      function collectGalleryFromDom() {
+        const cards = document.querySelectorAll('[data-gallery-index]');
+        return Array.from(cards).map((card) => {
+          const fields = card.querySelectorAll('[data-field]');
+          const obj = {};
+          fields.forEach((field) => {
+            obj[field.dataset.field] = field.value.trim();
+          });
+          return obj;
+        });
+      }
+
+      function resetInputValidationStyles() {
+        document.querySelectorAll('[data-field]').forEach((field) => {
+          field.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        });
+      }
+
+      function markInvalidField(card, fieldName) {
+        const field = card.querySelector(`[data-field="${fieldName}"]`);
+        if (!field) return;
+        field.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+      }
+
+      function isValidHttpUrl(value) {
+        try {
+          const url = new URL(value);
+          return url.protocol === 'http:' || url.protocol === 'https:';
+        } catch {
+          return false;
+        }
+      }
+
+      function validateRooms(rooms) {
+        const errors = [];
+        const cards = document.querySelectorAll('[data-room-index]');
+        const slugCount = new Map();
+
+        rooms.forEach((room) => {
+          const slug = (room.slug || '').toLowerCase();
+          if (!slug) return;
+          slugCount.set(slug, (slugCount.get(slug) || 0) + 1);
+        });
+
+        rooms.forEach((room, index) => {
+          const card = cards[index];
+          const required = ['name', 'capacity', 'image', 'price', 'slug', 'description'];
+
+          required.forEach((field) => {
+            if (!room[field]) {
+              markInvalidField(card, field);
+              errors.push(`Room ${index + 1}: ${field} is required`);
+            }
+          });
+
+          if (room.image && !isValidHttpUrl(room.image)) {
+            markInvalidField(card, 'image');
+            errors.push(`Room ${index + 1}: image must be a valid URL`);
+          }
+
+          const slug = (room.slug || '').toLowerCase();
+          if (slug && slugCount.get(slug) > 1) {
+            markInvalidField(card, 'slug');
+            errors.push(`Room ${index + 1}: slug must be unique`);
+          }
+        });
+
+        return errors;
+      }
+
+      function validateGallery(gallery) {
+        const errors = [];
+        const cards = document.querySelectorAll('[data-gallery-index]');
+
+        gallery.forEach((item, index) => {
+          const card = cards[index];
+
+          if (!item.url) {
+            markInvalidField(card, 'url');
+            errors.push(`Gallery item ${index + 1}: url is required`);
+          }
+
+          if (!item.alt) {
+            markInvalidField(card, 'alt');
+            errors.push(`Gallery item ${index + 1}: alt is required`);
+          }
+
+          if (item.url && !isValidHttpUrl(item.url)) {
+            markInvalidField(card, 'url');
+            errors.push(`Gallery item ${index + 1}: url must be a valid URL`);
+          }
+        });
+
+        return errors;
+      }
+
+      async function saveData(path, content, message) {
+        const res = await fetch('/api/save-data', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path, content, message })
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || 'Save failed');
+        }
+      }
+
+      function showStatus(text, isError = false) {
+        const el = byId('status');
+        el.textContent = text;
+        el.className = isError
+          ? 'rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800'
+          : 'rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800';
+      }
+
+      function bindEditorEvents() {
+        byId('add-room').addEventListener('click', () => {
+          state.rooms.push({
+            name: '',
+            description: '',
+            price: '',
+            image: '',
+            capacity: '',
+            slug: ''
+          });
+          renderRoomsEditor();
+        });
+
+        byId('add-gallery').addEventListener('click', () => {
+          state.gallery.push({ url: '', alt: '' });
+          renderGalleryEditor();
+        });
+
+        byId('rooms-editor').addEventListener('click', (event) => {
+          const button = event.target.closest('[data-action="delete-room"]');
+          if (!button) return;
+          const card = button.closest('[data-room-index]');
+          const index = Number(card.dataset.roomIndex);
+          state.rooms.splice(index, 1);
+          renderRoomsEditor();
+        });
+
+        byId('gallery-editor').addEventListener('click', (event) => {
+          const button = event.target.closest('[data-action="delete-gallery"]');
+          if (!button) return;
+          const card = button.closest('[data-gallery-index]');
+          const index = Number(card.dataset.galleryIndex);
+          state.gallery.splice(index, 1);
+          renderGalleryEditor();
+        });
+
+        byId('save-rooms').addEventListener('click', async () => {
+          try {
+            resetInputValidationStyles();
+            const rooms = collectRoomsFromDom();
+            const errors = validateRooms(rooms);
+            if (errors.length > 0) {
+              showStatus(errors[0], true);
+              showToast('Please fix the highlighted room fields.', 'error');
+              return;
+            }
+
+            await saveData('data/rooms.json', rooms, 'Update rooms data');
+            state.rooms = rooms;
+            showStatus('Rooms saved to GitHub successfully.');
+            showToast('Rooms saved successfully.');
+          } catch (error) {
+            showStatus(error.message, true);
+            showToast(error.message, 'error');
+          }
+        });
+
+        byId('save-gallery').addEventListener('click', async () => {
+          try {
+            resetInputValidationStyles();
+            const gallery = collectGalleryFromDom();
+            const errors = validateGallery(gallery);
+            if (errors.length > 0) {
+              showStatus(errors[0], true);
+              showToast('Please fix the highlighted gallery fields.', 'error');
+              return;
+            }
+
+            await saveData('data/gallery.json', gallery, 'Update gallery data');
+            state.gallery = gallery;
+            showStatus('Gallery saved to GitHub successfully.');
+            showToast('Gallery saved successfully.');
+          } catch (error) {
+            showStatus(error.message, true);
+            showToast(error.message, 'error');
+          }
+        });
+      }
+
+      async function initCms() {
+        try {
+          const [rooms, gallery] = await Promise.all([
+            fetchJson('rooms.json'),
+            fetchJson('gallery.json')
+          ]);
+          state.rooms = rooms;
+          state.gallery = gallery;
+          renderRoomsEditor();
+          renderGalleryEditor();
+          bindEditorEvents();
+          showStatus('Data loaded. You can now edit and save.');
+          showToast('Data loaded.');
+        } catch (error) {
+          showStatus(error.message, true);
+          showToast(error.message, 'error');
+        }
+      }
+
+      byId('login-btn').addEventListener('click', async () => {
+        const input = byId('password').value;
+        if (input !== ADMIN_PASSWORD) {
+          byId('login-error').textContent = 'Invalid password';
+          return;
+        }
+
+        byId('login-error').textContent = '';
+        byId('login-section').classList.add('hidden');
+        byId('cms-section').classList.remove('hidden');
+        showToast('Login successful.');
+        await initCms();
+      });
+    </script>
+  </body>
+</html>
