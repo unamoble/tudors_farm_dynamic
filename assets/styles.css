@@ -1,0 +1,15 @@
+/* Minimal shared styling for the admin page shell. */
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
