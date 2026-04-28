@@ -78,6 +78,7 @@ function roomTemplate(room, index) {
         <div>
           <label>Slug</label>
           <input data-field="slug" value="${escapeHtml(room.slug || '')}" placeholder="room-slug" />
+          <p style="margin:6px 0 0; color:#556; font-size:0.9rem;">URL slug (lowercase, no spaces) e.g. <em>tudor-hill-view</em></p>
         </div>
         <div>
           <label>Name</label>
@@ -90,10 +91,12 @@ function roomTemplate(room, index) {
         <div>
           <label>Price</label>
           <input data-field="price" value="${escapeHtml(room.price || '')}" placeholder="From INR 4,500 / night" />
+          <p style="margin:6px 0 0; color:#556; font-size:0.9rem;">Price example: ₹4500/night</p>
         </div>
         <div style="grid-column: 1 / -1;">
           <label>Image URL</label>
           <input data-field="image" value="${escapeHtml(room.image || '')}" placeholder="https://..." />
+          <p style="margin:6px 0 0; color:#556; font-size:0.9rem;">Paste image link here (use hosted images, e.g. Unsplash)</p>
         </div>
         <div style="grid-column: 1 / -1;">
           <label>Description</label>
@@ -114,6 +117,7 @@ function galleryTemplate(image, index) {
         <div style="grid-column: 1 / -1;">
           <label>Image URL</label>
           <input data-field="url" value="${escapeHtml(image.url || '')}" placeholder="https://..." />
+          <p style="margin:6px 0 0; color:#556; font-size:0.9rem;">Paste image link here (hosted URL)</p>
         </div>
         <div style="grid-column: 1 / -1;">
           <label>Alt Text</label>

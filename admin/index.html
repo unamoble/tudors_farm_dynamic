@@ -39,8 +39,9 @@
       <p>Enter admin password to manage rooms, gallery, and site settings.</p>
       <div class="grid" style="max-width: 420px;">
         <div>
-          <label for="admin-password">Password</label>
-          <input id="admin-password" type="password" autocomplete="current-password" />
+          <label for="admin-password">Admin Password</label>
+          <input id="admin-password" type="password" autocomplete="current-password" placeholder="Enter admin password" />
+          <p class="status" style="font-weight:400; font-size:0.9rem; color:#637a69; margin-top:6px;">Contact the developer to change this password.</p>
         </div>
       </div>
       <div class="actions">
@@ -89,8 +90,8 @@
         <h2>Rooms</h2>
         <div id="rooms-list" class="collection"></div>
         <div class="actions">
-          <button id="add-room-btn" class="small-btn" type="button">Add Room</button>
-          <button id="save-rooms-btn" class="small-btn primary" type="button">Save Rooms</button>
+          <button id="add-room-btn" class="small-btn" type="button">+ Add Room</button>
+          <button id="save-rooms-btn" class="small-btn primary" type="button">Save Rooms to GitHub</button>
         </div>
       </section>
 
@@ -98,15 +99,15 @@
         <h2>Gallery</h2>
         <div id="gallery-list" class="collection"></div>
         <div class="actions">
-          <button id="add-gallery-btn" class="small-btn" type="button">Add Image</button>
-          <button id="save-gallery-btn" class="small-btn primary" type="button">Save Gallery</button>
+          <button id="add-gallery-btn" class="small-btn" type="button">+ Add Image</button>
+          <button id="save-gallery-btn" class="small-btn primary" type="button">Save Gallery to GitHub</button>
         </div>
       </section>
 
       <section class="panel">
         <h2>Save All</h2>
         <div class="actions">
-          <button id="save-all-btn" class="small-btn primary" type="button">Save All Changes</button>
+          <button id="save-all-btn" class="small-btn primary" type="button">Save All to GitHub</button>
         </div>
         <p id="app-status" class="status"></p>
       </section>
