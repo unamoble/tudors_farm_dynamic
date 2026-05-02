@@ -245,13 +245,17 @@ export function roomCardMarkup(room, whatsappNumber, { large = false } = {}) {
     <article class="feature-card reveal">
       <img class="feature-card__media" src="${image}" alt="${roomName}" loading="lazy" />
       <div class="feature-card__body">
+        <div class="feature-card__meta">
+          <span class="feature-card__eyebrow">Handpicked stay</span>
+          <span class="pill">Tea-garden calm</span>
+        </div>
         <h3 class="feature-card__title">${roomName}</h3>
         <p class="feature-card__copy">${description}</p>
         <div class="room-card__meta">
           <span class="pill">${capacity}</span>
           <span class="pill">${price}</span>
         </div>
-        <div class="section-actions">
+        <div class="feature-card__actions">
           <a class="btn btn--dark" href="/rooms.html">View rooms</a>
           <a class="btn btn--primary" href="${bookingLink}" target="_blank" rel="noopener noreferrer">Book now</a>
         </div>

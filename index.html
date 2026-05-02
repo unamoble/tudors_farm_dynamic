@@ -44,33 +44,91 @@
           </div>
         </section>
 
-        <section class="page-section" id="featured-rooms">
+        <section class="page-section page-section--stay" id="featured-rooms">
           <div class="section-heading reveal">
             <p class="eyebrow" style="color: var(--forest); border-color: rgba(41, 74, 58, 0.14); background: rgba(41, 74, 58, 0.06);">Stay</p>
-            <h2>Featured Rooms</h2>
-            <p>Choose from the most welcoming cottage stays, each with a clear WhatsApp booking path.</p>
+            <h2>Rooms with a slower, more considered rhythm.</h2>
+            <p>Pick a cottage that feels calm, clear, and ready for direct WhatsApp booking.</p>
           </div>
-          <div id="home-rooms" class="section-grid section-grid--rooms"></div>
-          <div class="section-actions reveal">
-            <a class="btn btn--dark" href="/rooms.html">View All Rooms</a>
+
+          <div class="stay-showcase">
+            <aside class="stay-showcase__intro reveal">
+              <p class="stay-showcase__kicker">Why guests book here</p>
+              <h3>Simple stays, clear pricing, and a quiet hill-country feel.</h3>
+              <p>
+                Each room preview surfaces the essentials up front so guests can compare quickly,
+                ask a question, and lock in dates without friction.
+              </p>
+
+              <div class="stay-highlights">
+                <div class="stay-highlight">
+                  <span class="stay-highlight__label">Booking</span>
+                  <span class="stay-highlight__value">Direct on WhatsApp</span>
+                </div>
+                <div class="stay-highlight">
+                  <span class="stay-highlight__label">Mood</span>
+                  <span class="stay-highlight__value">Quiet, tea-garden calm</span>
+                </div>
+                <div class="stay-highlight">
+                  <span class="stay-highlight__label">View</span>
+                  <span class="stay-highlight__value">Hillside and greenery</span>
+                </div>
+              </div>
+            </aside>
+
+            <div class="stay-showcase__content">
+              <div id="home-rooms" class="section-grid section-grid--rooms section-grid--home-stay"></div>
+              <div class="section-actions reveal">
+                <a class="btn btn--dark" href="/rooms.html">View All Rooms</a>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section class="page-section" id="gallery-preview">
+        <section class="page-section page-section--gallery" id="gallery-preview">
           <div class="section-heading reveal">
             <p class="eyebrow" style="color: var(--forest); border-color: rgba(41, 74, 58, 0.14); background: rgba(41, 74, 58, 0.06);">Moments</p>
-            <h2>Gallery Preview</h2>
-            <p>A quick look at the views, textures, and quiet detail across the property.</p>
+            <h2>Tea-garden views and quiet details.</h2>
+            <p>A curated look at the light, landscape, and lived-in feeling of the cottages.</p>
           </div>
-          <div id="home-gallery" class="section-grid section-grid--gallery"></div>
-          <div class="section-actions reveal">
-            <a class="btn btn--dark" href="/gallery.html">Open Full Gallery</a>
+
+          <div class="gallery-showcase">
+            <aside class="gallery-showcase__intro reveal">
+              <p class="gallery-showcase__kicker">Gallery experience</p>
+              <h3>Tap any photo to see it larger and explore the property through our lens.</h3>
+              <p>
+                We photograph the actual stay, not a stylized version. You'll see the views from
+                rooms, morning light, textures, and the landscape that define quiet hill-country time.
+              </p>
+
+              <div class="gallery-highlights">
+                <div class="gallery-highlight">
+                  <span class="gallery-highlight__label">Photos</span>
+                  <span class="gallery-highlight__value">Property focused</span>
+                </div>
+                <div class="gallery-highlight">
+                  <span class="gallery-highlight__label">Interaction</span>
+                  <span class="gallery-highlight__value">Tap to enlarge</span>
+                </div>
+                <div class="gallery-highlight">
+                  <span class="gallery-highlight__label">Mood</span>
+                  <span class="gallery-highlight__value">Authentic moments</span>
+                </div>
+              </div>
+            </aside>
+
+            <div class="gallery-showcase__content">
+              <div id="home-gallery" class="section-grid section-grid--gallery section-grid--home-gallery"></div>
+              <div class="section-actions reveal">
+                <a class="btn btn--dark" href="/gallery.html">Open Full Gallery</a>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section class="page-section" id="about-preview">
-          <div class="section-grid section-grid--about">
-            <div class="about-panel reveal">
+        <section class="page-section page-section--about" id="about-preview">
+          <div class="about-showcase">
+            <div class="about-showcase__media reveal">
               <img
                 class="about-panel__media"
                 src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80"
@@ -78,13 +136,29 @@
                 loading="lazy"
               />
             </div>
-            <div class="about-panel__body reveal">
+            <div class="about-showcase__body reveal">
               <p class="eyebrow" style="color: var(--forest); border-color: rgba(41, 74, 58, 0.14); background: rgba(41, 74, 58, 0.06);">About</p>
-              <h2 class="about-panel__title">A Calm Tea-Estate Stay With A Personal Touch.</h2>
-              <p class="about-panel__copy" data-about-preview-copy>
+              <h2 class="about-showcase__title">A Calm Tea-Estate Stay With A Personal Touch.</h2>
+              <p class="about-showcase__copy">
                 Set in Rohini Tea Garden, the property is designed around fresh mountain air,
                 generous views, and a slower rhythm that suits couples, families, and small groups.
               </p>
+              
+              <div class="about-highlights">
+                <div class="about-highlight">
+                  <span class="about-highlight__label">Setting</span>
+                  <span class="about-highlight__value">Rohini Tea Estate</span>
+                </div>
+                <div class="about-highlight">
+                  <span class="about-highlight__label">Guests</span>
+                  <span class="about-highlight__value">Couples, families, small groups</span>
+                </div>
+                <div class="about-highlight">
+                  <span class="about-highlight__label">Vibe</span>
+                  <span class="about-highlight__value">Unhurried, genuine, mountain calm</span>
+                </div>
+              </div>
+              
               <div class="section-actions">
                 <a class="btn btn--dark" href="/about.html">Read Our Story</a>
               </div>
