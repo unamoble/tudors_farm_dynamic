@@ -499,3 +499,26 @@ export function createGalleryModal() {
 
   return { open, close };
 }
+document.addEventListener("DOMContentLoaded", async () => {
+  console.log("INIT START");
+
+  try {
+    const { config, rooms, gallery } = await loadSiteData();
+
+    console.log("DATA LOADED:", rooms, gallery);
+
+    // 🛏️ Render rooms
+    const roomsContainer = document.querySelector("[data-rooms]");
+    renderRoomCards(roomsContainer, rooms, config.whatsappNumber, { large: true });
+
+    // 🌄 Render gallery
+    const galleryContainer = document.querySelector("[data-gallery]");
+    renderGalleryGrid(galleryContainer, gallery, { clickable: true });
+
+    // 🔧 Render header/footer
+    renderSiteChrome({ page: "home", config });
+
+  } catch (err) {
+    console.error("INIT ERROR:", err);
+  }
+});
