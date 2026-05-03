@@ -37,11 +37,24 @@ export function normalizeConfig(config = {}) {
 }
 
 export async function loadJson(fileName) {
-  const response = await fetch(`${GITHUB_RAW_BASE}/${fileName}`, { cache: 'no-store' });
-  if (!response.ok) {
-    throw new Error(`Failed to load ${fileName}`);
+  const sources = [`${GITHUB_RAW_BASE}/${fileName}`, `/data/${fileName}`];
+
+  let lastError = null;
+
+  for (const source of sources) {
+    try {
+      const response = await fetch(source, { cache: 'no-store' });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      lastError = error;
+    }
   }
-  return response.json();
+
+  throw new Error(`Failed to load ${fileName}: ${lastError?.message || 'unknown error'}`);
 }
 
 export async function loadSiteData() {
@@ -50,6 +63,11 @@ export async function loadSiteData() {
     loadJson('rooms.json'),
     loadJson('gallery.json')
   ]);
+
+  console.debug('[tudors] site data loaded', {
+    rooms: Array.isArray(rooms) ? rooms.length : 0,
+    gallery: Array.isArray(gallery) ? gallery.length : 0
+  });
 
   return {
     config: normalizeConfig(config),
@@ -386,6 +404,14 @@ export function roomCardMarkup(room, whatsappNumber, { large = false } = {}) {
 
 export function renderRoomCards(container, rooms, whatsappNumber, { limit = rooms.length, large = false } = {}) {
   if (!container) return;
+
+  console.debug('[tudors] renderRoomCards', {
+    container,
+    count: rooms.length,
+    limit,
+    large
+  });
+
   container.innerHTML = rooms.slice(0, limit).map((room) => roomCardMarkup(room, whatsappNumber, { large })).join('');
 }
 
@@ -412,6 +438,14 @@ export function galleryTileMarkup(image, { clickable = false, index = 0 } = {}) 
 
 export function renderGalleryGrid(container, images, { limit = images.length, clickable = false } = {}) {
   if (!container) return;
+
+  console.debug('[tudors] renderGalleryGrid', {
+    container,
+    count: images.length,
+    limit,
+    clickable
+  });
+
   container.innerHTML = images
     .slice(0, limit)
     .map((image, index) => galleryTileMarkup(image, { clickable, index }))
