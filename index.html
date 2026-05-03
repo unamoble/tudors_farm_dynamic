@@ -238,6 +238,17 @@
 
       async function init() {
         try {
+          // Debug: explicit fetches to verify GitHub raw endpoints
+          fetch('https://raw.githubusercontent.com/unamoble/tudors_farm_dynamic/main/data/rooms.json')
+            .then(res => { console.log('STATUS:', res.status); return res.json(); })
+            .then(data => console.log('DATA:', data))
+            .catch(err => console.error('ERROR:', err));
+
+          fetch('https://raw.githubusercontent.com/unamoble/tudors_farm_dynamic/main/data/gallery.json')
+            .then(res => { console.log('STATUS:', res.status); return res.json(); })
+            .then(data => console.log('DATA:', data))
+            .catch(err => console.error('ERROR:', err));
+
           const { config, rooms, gallery } = await loadSiteData();
 
           document.title = config.siteTitle;

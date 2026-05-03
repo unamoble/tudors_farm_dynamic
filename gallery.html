@@ -103,6 +103,12 @@
 
       async function init() {
         try {
+          // Debug: explicit fetch to verify GitHub raw gallery endpoint
+          fetch('https://raw.githubusercontent.com/unamoble/tudors_farm_dynamic/main/data/gallery.json')
+            .then(res => { console.log('STATUS:', res.status); return res.json(); })
+            .then(data => console.log('DATA:', data))
+            .catch(err => console.error('ERROR:', err));
+
           const { config, gallery } = await loadSiteData();
           document.title = `Gallery | ${config.siteTitle}`;
           renderSiteChrome({ page: 'gallery', config });
