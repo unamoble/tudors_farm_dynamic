@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Host: tudorsdemo.unamoble.com
+Sitemap: https://tudorsdemo.unamoble.com/sitemap.xml

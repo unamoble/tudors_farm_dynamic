@@ -1,0 +1,15 @@
+{
+  "name": "Tudor Farm Cottages",
+  "short_name": "Tudor Farm",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fcfbf7",
+  "theme_color": "#294a3a",
+  "icons": [
+    {
+      "src": "/assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
