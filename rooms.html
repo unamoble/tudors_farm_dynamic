@@ -86,12 +86,6 @@
 
       async function init() {
         try {
-          // Debug: explicit fetch to verify GitHub raw rooms endpoint
-          fetch('https://raw.githubusercontent.com/unamoble/tudors_farm_dynamic/main/data/rooms.json')
-            .then(res => { console.log('STATUS:', res.status); return res.json(); })
-            .then(data => console.log('DATA:', data))
-            .catch(err => console.error('ERROR:', err));
-
           const { config, rooms } = await loadSiteData();
           document.title = `Rooms | ${config.siteTitle}`;
           renderSiteChrome({ page: 'rooms', config });
@@ -111,6 +105,6 @@
         init();
       }
     </script>
-    <script src="/assets/site.js" defer></script>
-  </body>
+<script type="module" src="/assets/site.js"></script>
+</body>
 </html>

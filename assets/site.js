@@ -58,17 +58,6 @@ export async function loadJson(fileName) {
 }
 
 export async function loadSiteData() {
-  // Debug: explicit fetches to verify GitHub raw endpoints from central module
-  fetch('https://raw.githubusercontent.com/unamoble/tudors_farm_dynamic/main/data/rooms.json')
-    .then((res) => { console.log('STATUS: rooms.json', res.status); return res.json(); })
-    .then((data) => console.log('DATA: rooms.json', data))
-    .catch((err) => console.error('ERROR: rooms.json', err));
-
-  fetch('https://raw.githubusercontent.com/unamoble/tudors_farm_dynamic/main/data/gallery.json')
-    .then((res) => { console.log('STATUS: gallery.json', res.status); return res.json(); })
-    .then((data) => console.log('DATA: gallery.json', data))
-    .catch((err) => console.error('ERROR: gallery.json', err));
-
   const [config, rooms, gallery] = await Promise.all([
     loadJson('config.json'),
     loadJson('rooms.json'),
