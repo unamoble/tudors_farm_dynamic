@@ -1,7 +1,7 @@
 export const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/unamoble/tudors_farm_dynamic/main/data';
 export const DEFAULT_MAP_EMBED = 'https://maps.google.com/maps?q=Rohini%20Tea%20Garden%2C%20Kurseong&t=&z=13&ie=UTF8&iwloc=&output=embed';
 
-const ROOMS_URL = "https://raw.githubusercontent.com/unamoble/tudors_farm_dynamic/main/data/rooms.json";
+const ROOMS_URL = "https://cdn.jsdelivr.net/gh/unamoble/tudors_farm_dynamic/data/rooms.json";
 
 fetch(ROOMS_URL)
   .then(res => {
@@ -14,7 +14,7 @@ fetch(ROOMS_URL)
   .catch(err => {
     console.error("ROOMS ERROR:", err);
   });
-  
+
 const NAV_ITEMS = [
   { label: 'Home', href: '/index.html', page: 'home' },
   { label: 'Rooms', href: '/rooms.html', page: 'rooms' },
