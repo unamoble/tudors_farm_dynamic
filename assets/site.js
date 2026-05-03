@@ -516,7 +516,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderGalleryGrid(galleryContainer, gallery, { clickable: true });
 
     // 🔧 Render header/footer
-    renderSiteChrome({ page: "home", config });
+    renderSiteChrome({ page: document.body.dataset.page, config });
 
   } catch (err) {
     console.error("INIT ERROR:", err);
