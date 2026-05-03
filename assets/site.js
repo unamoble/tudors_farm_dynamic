@@ -77,6 +77,104 @@ export function formatPhoneDisplay(number) {
   return `+${digits}`;
 }
 
+function formatDateInputValue(date) {
+  const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return localDate.toISOString().slice(0, 10);
+}
+
+function parseDateInputValue(value) {
+  if (!value) return null;
+
+  const parts = value.split('-').map((part) => Number(part));
+  if (parts.length !== 3 || parts.some((part) => Number.isNaN(part))) {
+    return null;
+  }
+
+  const [year, month, day] = parts;
+  return new Date(year, month - 1, day);
+}
+
+function formatBookingDate(value) {
+  const date = parseDateInputValue(value);
+  if (!date) return '';
+
+  return new Intl.DateTimeFormat('en-IN', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  }).format(date);
+}
+
+function addDays(value, count) {
+  const date = parseDateInputValue(value);
+  if (!date) return '';
+
+  date.setDate(date.getDate() + count);
+  return formatDateInputValue(date);
+}
+
+function initContactForm(config) {
+  const form = document.querySelector('[data-contact-form]');
+  if (!form) return;
+
+  const nameInput = form.querySelector('#contact-name');
+  const phoneInput = form.querySelector('#contact-phone');
+  const checkInInput = form.querySelector('#contact-check-in');
+  const checkOutInput = form.querySelector('#contact-check-out');
+  const messageInput = form.querySelector('#contact-message');
+  const statusNote = form.querySelector('[data-contact-status]');
+
+  const today = formatDateInputValue(new Date());
+  const tomorrow = addDays(today, 1);
+
+  if (checkInInput) {
+    checkInInput.min = today;
+  }
+
+  if (checkOutInput) {
+    checkOutInput.min = tomorrow;
+  }
+
+  const syncCheckoutBound = () => {
+    if (!checkInInput || !checkOutInput) return;
+
+    const checkInValue = checkInInput.value;
+    const checkoutMin = checkInValue ? addDays(checkInValue, 1) : tomorrow;
+
+    if (checkoutMin) {
+      checkOutInput.min = checkoutMin;
+      if (checkOutInput.value && checkOutInput.value < checkoutMin) {
+        checkOutInput.value = '';
+      }
+    }
+  };
+
+  checkInInput?.addEventListener('change', syncCheckoutBound);
+  checkOutInput?.addEventListener('change', syncCheckoutBound);
+  syncCheckoutBound();
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const bookingLines = [
+      'Hi, I want to book a stay at Tudor Farm Cottages.',
+      nameInput?.value.trim() ? `Name: ${nameInput.value.trim()}` : null,
+      phoneInput?.value.trim() ? `Phone: ${phoneInput.value.trim()}` : null,
+      checkInInput?.value ? `Check-in: ${formatBookingDate(checkInInput.value) || checkInInput.value}` : null,
+      checkOutInput?.value ? `Check-out: ${formatBookingDate(checkOutInput.value) || checkOutInput.value}` : null,
+      messageInput?.value.trim() ? `Message: ${messageInput.value.trim()}` : null
+    ].filter(Boolean);
+
+    const whatsappUrl = buildWhatsAppLink(config.whatsappNumber, bookingLines.join('\n'));
+
+    if (statusNote) {
+      statusNote.textContent = 'Opening WhatsApp with your booking details.';
+    }
+
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+  });
+}
+
 export function renderSiteChrome({ page, config }) {
   const header = document.querySelector('[data-site-header]');
   const footer = document.querySelector('[data-site-footer]');
@@ -85,6 +183,7 @@ export function renderSiteChrome({ page, config }) {
     config.whatsappNumber,
     'Hi, I want to book a stay at Tudor Farm Cottages'
   );
+  const currentYear = new Date().getFullYear();
 
   if (header) {
     header.classList.add('site-header');
@@ -159,26 +258,46 @@ export function renderSiteChrome({ page, config }) {
     footer.classList.add('site-footer');
     footer.innerHTML = `
       <div class="site-footer__inner">
+        <div class="site-footer__top">
+          <p class="site-footer__eyebrow">Plan your stay</p>
+          <p class="site-footer__intro">Need a room, a map, or a quick booking answer? Use the direct links below and message us anytime.</p>
+          <div class="site-footer__chips">
+            <span class="site-footer__chip">Direct WhatsApp</span>
+            <span class="site-footer__chip">Tea-garden views</span>
+            <span class="site-footer__chip">Fast replies</span>
+          </div>
+        </div>
+
         <div class="site-footer__grid">
           <div class="site-footer__brand">
             <a class="site-brand" href="/index.html">
               <span class="site-brand__mark">T</span>
               <span>Tudor Farm Cottages</span>
             </a>
-            <p class="muted-copy">${escapeHtml(config.siteSubtitle)}</p>
+            <p class="site-footer__tagline">${escapeHtml(config.siteSubtitle)}</p>
           </div>
 
-          <div class="site-footer__links">
-            ${NAV_ITEMS.map((item) => `<a href="${item.href}">${item.label}</a>`).join('')}
+          <div class="site-footer__section">
+            <h4 class="site-footer__heading">Explore</h4>
+            <div class="site-footer__links">
+              ${NAV_ITEMS.map((item) => `<a href="${item.href}">${item.label}</a>`).join('')}
+            </div>
           </div>
 
-          <div class="site-footer__links">
-            <a href="/contact.html">${escapeHtml(formatPhoneDisplay(config.whatsappNumber))}</a>
-            <a href="/contact.html#map">Rohini Tea Garden, Kurseong</a>
-            <a href="${whatsappLink}" target="_blank" rel="noopener noreferrer">WhatsApp booking</a>
+          <div class="site-footer__section">
+            <h4 class="site-footer__heading">Connect</h4>
+            <div class="site-footer__links">
+              <a href="/contact.html">${escapeHtml(formatPhoneDisplay(config.whatsappNumber))}</a>
+              <a href="/contact.html#map">Rohini Tea Garden, Kurseong</a>
+              <a href="${whatsappLink}" target="_blank" rel="noopener noreferrer">WhatsApp booking</a>
+            </div>
           </div>
         </div>
-        <p class="site-footer__note">Premium hillside cottage stays with direct WhatsApp booking and a calm, nature-first experience.</p>
+        <div class="site-footer__divider"></div>
+        <div class="site-footer__bottom">
+          <p class="site-footer__note">© ${currentYear} Tudor Farm Cottages. Premium hillside stays with direct WhatsApp booking.</p>
+          <a class="site-footer__back" href="#" aria-label="Back to top">Back to top</a>
+        </div>
       </div>
     `;
   }
@@ -189,6 +308,7 @@ export function renderSiteChrome({ page, config }) {
     floatingButton.rel = 'noopener noreferrer';
   }
 
+  initContactForm(config);
   initRevealAnimations();
 }
 

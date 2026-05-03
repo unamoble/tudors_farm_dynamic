@@ -20,13 +20,45 @@
     <div class="site-shell">
       <header data-site-header></header>
       <main class="page-main">
-        <section class="page-section">
+        <section class="page-section page-section--gallery page-section--gallery-page">
           <div class="section-heading reveal">
             <p class="eyebrow" style="color: var(--forest); border-color: rgba(41, 74, 58, 0.14); background: rgba(41, 74, 58, 0.06);">Gallery</p>
             <h2>Property moments with a larger view.</h2>
             <p>Hover for depth, tap for a larger image, and keep the booking flow close at hand.</p>
           </div>
-          <div id="gallery-grid" class="section-grid section-grid--gallery"></div>
+
+          <div class="gallery-showcase gallery-showcase--page">
+            <aside class="gallery-showcase__intro reveal">
+              <p class="gallery-showcase__kicker">Explore the stay</p>
+              <h3>Light, texture, and quiet views from every corner of the estate.</h3>
+              <p>
+                These images are captured across the cottages, lounge, and tea-garden surrounds so you
+                can understand the mood before you arrive.
+              </p>
+              <div class="gallery-highlights">
+                <div class="gallery-highlight">
+                  <span class="gallery-highlight__label">Scenes</span>
+                  <span class="gallery-highlight__value">Rooms, gardens, and shared spaces</span>
+                </div>
+                <div class="gallery-highlight">
+                  <span class="gallery-highlight__label">Feel</span>
+                  <span class="gallery-highlight__value">Soft light, warm interiors</span>
+                </div>
+                <div class="gallery-highlight">
+                  <span class="gallery-highlight__label">Action</span>
+                  <span class="gallery-highlight__value">Tap for full-size previews</span>
+                </div>
+              </div>
+              <div class="section-actions">
+                <a class="btn btn--dark" href="/contact.html">Plan Your Stay</a>
+                <a class="btn btn--ghost" href="/rooms.html">View Rooms</a>
+              </div>
+            </aside>
+
+            <div class="gallery-showcase__content">
+              <div id="gallery-grid" class="section-grid section-grid--gallery section-grid--gallery-page"></div>
+            </div>
+          </div>
         </section>
       </main>
       <footer data-site-footer></footer>

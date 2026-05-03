@@ -20,52 +20,90 @@
     <div class="site-shell">
       <header data-site-header></header>
       <main class="page-main">
-        <section class="page-section">
+        <section class="page-section page-section--contact page-section--contact-page">
           <div class="section-heading reveal">
             <p class="eyebrow" style="color: var(--forest); border-color: rgba(41, 74, 58, 0.14); background: rgba(41, 74, 58, 0.06);">Contact</p>
-            <h2>Reach out directly for room availability and directions.</h2>
-            <p>WhatsApp is the fastest route for bookings, changes, and travel questions.</p>
+            <h2>Check availability, choose your dates, and send a booking request fast.</h2>
+            <p>Use the form first, then WhatsApp or the map if you want to confirm details or plan arrival.</p>
           </div>
 
-          <div class="section-grid section-grid--split">
-            <div class="contact-card reveal">
-              <div class="contact-card__body">
-                <h3 class="contact-card__title">Direct booking line</h3>
-                <p class="contact-card__copy">
-                  Use the same number for phone and WhatsApp so visitors get one clear path to
-                  booking.
-                </p>
+          <div class="contact-showcase">
+            <div class="contact-showcase__content">
+              <div class="contact-grid">
+                <div class="contact-card contact-form-card reveal">
+                  <div class="contact-card__body">
+                    <p class="contact-showcase__kicker">Priority booking</p>
+                    <h3 class="contact-card__title">Tell us your dates and we’ll reply with availability.</h3>
+                    <p class="contact-card__copy">
+                      The form is the fastest route. Pick check-in and check-out from the calendar, then send the request by WhatsApp.
+                    </p>
 
-                <ul class="contact-list">
-                  <li>
-                    <div>
-                      <strong>Phone / WhatsApp</strong>
-                      <a href="#" data-contact-phone>Loading number</a>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <strong>Location</strong>
-                      <span>Rohini Tea Garden, Kurseong</span>
-                    </div>
-                  </li>
-                </ul>
+                    <form class="contact-form" data-contact-form aria-label="Contact form">
+                      <div class="contact-form__field">
+                        <label for="contact-name">Full name</label>
+                        <input id="contact-name" name="name" type="text" placeholder="Your name" required autocomplete="name" />
+                      </div>
+                      <div class="contact-form__field">
+                        <label for="contact-phone">Phone or WhatsApp</label>
+                        <input id="contact-phone" name="phone" type="tel" placeholder="+91 99999 99999" required autocomplete="tel" />
+                      </div>
+                      <div class="contact-form__date-grid">
+                        <div class="contact-form__field">
+                          <label for="contact-check-in">Check-in</label>
+                          <input id="contact-check-in" name="checkIn" type="date" required />
+                        </div>
+                        <div class="contact-form__field">
+                          <label for="contact-check-out">Check-out</label>
+                          <input id="contact-check-out" name="checkOut" type="date" required />
+                        </div>
+                      </div>
+                      <div class="contact-form__field">
+                        <label for="contact-message">Message</label>
+                        <textarea id="contact-message" name="message" rows="4" placeholder="Room preference, number of guests, or anything else we should know"></textarea>
+                      </div>
+                      <button class="btn btn--dark" type="submit" data-contact-submit>Send booking request</button>
+                      <p class="contact-form__note" data-contact-status>We will open WhatsApp with your details prefilled.</p>
+                    </form>
+                  </div>
+                </div>
 
-                <div class="contact-actions">
-                  <a class="btn btn--primary" data-contact-whatsapp href="#" target="_blank" rel="noopener noreferrer">WhatsApp now</a>
-                  <a class="btn btn--dark" href="/rooms.html">Check rooms</a>
+                <aside class="contact-showcase__intro reveal">
+                  <p class="contact-showcase__kicker">Direct booking</p>
+                  <h3>We respond quickly and keep booking simple.</h3>
+                  <p>
+                    Send a WhatsApp message for availability, check-in timing, and room-specific
+                    questions. You can also find us on the map for easy arrival.
+                  </p>
+                  <div class="contact-highlights">
+                    <div class="contact-highlight">
+                      <span class="contact-highlight__label">Response</span>
+                      <span class="contact-highlight__value">Fast WhatsApp replies</span>
+                    </div>
+                    <div class="contact-highlight">
+                      <span class="contact-highlight__label">Directions</span>
+                      <span class="contact-highlight__value">Map and location details</span>
+                    </div>
+                    <div class="contact-highlight">
+                      <span class="contact-highlight__label">Support</span>
+                      <span class="contact-highlight__value">Room questions answered</span>
+                    </div>
+                  </div>
+                  <div class="section-actions">
+                    <a class="btn btn--primary" data-contact-whatsapp href="#" target="_blank" rel="noopener noreferrer">WhatsApp now</a>
+                    <a class="btn btn--dark" href="/rooms.html">Check rooms</a>
+                  </div>
+                </aside>
+
+                <div class="contact-card contact-card--map reveal" id="map">
+                  <iframe
+                    class="contact-map"
+                    title="Map to Rohini Tea Garden, Kurseong"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    src="https://maps.google.com/maps?q=Rohini%20Tea%20Garden%2C%20Kurseong&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                  ></iframe>
                 </div>
               </div>
-            </div>
-
-            <div class="contact-card reveal" id="map">
-              <iframe
-                class="contact-map"
-                title="Map to Rohini Tea Garden, Kurseong"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                src="https://maps.google.com/maps?q=Rohini%20Tea%20Garden%2C%20Kurseong&t=&z=13&ie=UTF8&iwloc=&output=embed"
-              ></iframe>
             </div>
           </div>
         </section>

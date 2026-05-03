@@ -20,7 +20,7 @@
     <div class="site-shell">
       <header data-site-header></header>
       <main class="page-main">
-        <section class="page-section">
+        <section class="page-section page-section--about page-section--about-page">
           <div class="section-heading reveal">
             <p class="eyebrow" style="color: var(--forest); border-color: rgba(41, 74, 58, 0.14); background: rgba(41, 74, 58, 0.06);">About us</p>
             <h2>Built around tea garden calm and generous hospitality.</h2>
@@ -30,48 +30,60 @@
             </p>
           </div>
 
-          <div class="section-grid section-grid--split">
-            <div class="about-panel reveal">
+          <div class="about-story">
+            <div class="about-story__panel reveal">
+              <p class="about-story__eyebrow">The setting</p>
+              <h3>A property shaped by the hillscape.</h3>
+              <p>
+                The cottages sit near Rohini Tea Garden, Kurseong, a setting chosen for its views,
+                cooler air, and the sense of pause that guests often search for in the hills.
+              </p>
+              <div class="about-story__highlights">
+                <div class="about-story__highlight">
+                  <span class="about-story__label">Location</span>
+                  <span class="about-story__value">Rohini Tea Garden, Kurseong</span>
+                </div>
+                <div class="about-story__highlight">
+                  <span class="about-story__label">Mood</span>
+                  <span class="about-story__value">Quiet, slow, nature-first</span>
+                </div>
+                <div class="about-story__highlight">
+                  <span class="about-story__label">Service</span>
+                  <span class="about-story__value">Personal, warm, direct</span>
+                </div>
+              </div>
+            </div>
+            <div class="about-story__media reveal">
               <img
-                class="about-panel__media"
-                src="https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1200&q=80"
+                class="about-story__image"
+                src="https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1400&q=80"
                 alt="Tea gardens rolling through the hills"
                 loading="lazy"
               />
             </div>
-            <div class="about-panel__body reveal">
-              <h3 class="about-panel__title">A property shaped by the hillscape.</h3>
-              <p class="about-panel__copy">
-                The cottages sit near Rohini Tea Garden, Kurseong, a setting chosen for its views,
-                cooler air, and the sense of pause that guests often search for in the hills.
+          </div>
+
+          <div class="about-story about-story--reverse">
+            <div class="about-story__panel reveal">
+              <p class="about-story__eyebrow">The experience</p>
+              <h3>Nature-focused, not overcomplicated.</h3>
+              <p>
+                Guests book directly on WhatsApp, view the latest rooms and gallery data from the
+                CMS, and move from browsing to booking with minimal friction.
               </p>
-              <p class="about-panel__copy">
-                The guest experience leans into nature first: open mornings, comfortable rooms, and
-                spaces that make it easy to spend time together without feeling crowded.
+              <p>
+                That keeps the experience practical for travelers while preserving the calm,
+                premium feel that a hospitality website should have.
               </p>
               <div class="section-actions">
                 <a class="btn btn--dark" href="/rooms.html">See rooms</a>
                 <a class="btn btn--primary" href="/contact.html">Plan a visit</a>
               </div>
             </div>
-          </div>
-
-          <div class="section-grid section-grid--split" style="margin-top: 1.5rem;">
-            <div class="about-panel__body reveal">
-              <h3 class="about-panel__title">Nature-focused, not overcomplicated.</h3>
-              <p class="about-panel__copy">
-                Guests book directly on WhatsApp, view the latest rooms and gallery data from the
-                CMS, and move from browsing to booking with minimal friction.
-              </p>
-              <p class="about-panel__copy">
-                That keeps the experience practical for travelers while preserving the calm,
-                premium feel that a hospitality website should have.
-              </p>
-            </div>
-            <div class="about-panel reveal">
+            <div class="about-story__media reveal">
               <img
-                class="about-panel__media"
-                src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80"
+                class="about-story__image"
+                src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80"
                 alt="Warm cottage interior with natural textures"
                 loading="lazy"
               />
