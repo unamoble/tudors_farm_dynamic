@@ -502,6 +502,22 @@ export function createGalleryModal() {
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("INIT START");
 
+  // Show loader
+  const loader = document.createElement('div');
+  loader.className = 'site-loader';
+  loader.innerHTML = `
+    <div class="site-loader__content">
+      <div class="site-loader__spinner"></div>
+      <div class="site-loader__text">
+        Loading
+        <span class="site-loader__dot"></span>
+        <span class="site-loader__dot"></span>
+        <span class="site-loader__dot"></span>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(loader);
+
   try {
     const { config, rooms, gallery } = await loadSiteData();
 
@@ -518,7 +534,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 🔧 Render header/footer
     renderSiteChrome({ page: document.body.dataset.page, config });
 
+    // Hide loader with smooth fade
+    setTimeout(() => {
+      loader.classList.add('is-hidden');
+      setTimeout(() => loader.remove(), 400);
+    }, 300);
+
   } catch (err) {
     console.error("INIT ERROR:", err);
+    loader.classList.add('is-hidden');
+    setTimeout(() => loader.remove(), 400);
   }
 });
