@@ -61,10 +61,6 @@ Do not expose `GITHUB_TOKEN` in frontend code.
 
 Open `/admin`.
 
-Default hardcoded admin password:
-
-`tudor-admin-123`
-
 After login:
 
 - Add/edit/delete rooms
