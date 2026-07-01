@@ -95,8 +95,8 @@ function roomTemplate(room, index) {
         </div>
         <div style="grid-column: 1 / -1;">
           <label>Image URL</label>
-          <input data-field="image" value="${escapeHtml(room.image || '')}" placeholder="https://..." />
-          <p style="margin:6px 0 0; color:#556; font-size:0.9rem;">Paste image link here (use hosted images, e.g. Unsplash)</p>
+          <input data-field="image" value="${escapeHtml(room.image || '')}" placeholder="/assets/images/room1.jpeg" />
+          <p style="margin:6px 0 0; color:#556; font-size:0.9rem;">Use a hosted image URL or a local path such as <em>/assets/images/room1.jpeg</em>.</p>
         </div>
         <div style="grid-column: 1 / -1;">
           <label>Description</label>
@@ -116,8 +116,8 @@ function galleryTemplate(image, index) {
       <div class="grid two">
         <div style="grid-column: 1 / -1;">
           <label>Image URL</label>
-          <input data-field="url" value="${escapeHtml(image.url || '')}" placeholder="https://..." />
-          <p style="margin:6px 0 0; color:#556; font-size:0.9rem;">Paste image link here (hosted URL)</p>
+          <input data-field="url" value="${escapeHtml(image.url || '')}" placeholder="/assets/images/exterior_view.jpeg" />
+          <p style="margin:6px 0 0; color:#556; font-size:0.9rem;">Use a hosted image URL or a local path such as <em>/assets/images/exterior_view.jpeg</em>.</p>
         </div>
         <div style="grid-column: 1 / -1;">
           <label>Alt Text</label>
@@ -164,11 +164,19 @@ function isValidHttpUrl(value) {
   }
 }
 
+function isValidAssetPath(value) {
+  return /^\/assets\/images\/[^?#]+\.(avif|webp|jpe?g|png|gif)$/i.test(value);
+}
+
+function isValidImageSource(value) {
+  return isValidHttpUrl(value) || isValidAssetPath(value);
+}
+
 function validateConfig(config) {
   const errors = [];
   if (!config.siteTitle) errors.push('Site title is required.');
   if (!config.whatsappNumber) errors.push('WhatsApp number is required.');
-  if (config.heroImage && !isValidHttpUrl(config.heroImage)) errors.push('Hero image must be a valid URL.');
+  if (config.heroImage && !isValidImageSource(config.heroImage)) errors.push('Hero image must be a valid URL or /assets/images path.');
   if (config.mapEmbed && !isValidHttpUrl(config.mapEmbed)) errors.push('Map embed must be a valid URL.');
   return errors;
 }
@@ -185,7 +193,7 @@ function validateRooms(rooms) {
     if (!room.price) errors.push(`Room ${number}: price is required.`);
     if (!room.image) errors.push(`Room ${number}: image URL is required.`);
     if (!room.description) errors.push(`Room ${number}: description is required.`);
-    if (room.image && !isValidHttpUrl(room.image)) errors.push(`Room ${number}: image URL must be valid.`);
+    if (room.image && !isValidImageSource(room.image)) errors.push(`Room ${number}: image must be a valid URL or /assets/images path.`);
     if (room.slug) {
       const lower = room.slug.toLowerCase();
       if (seenSlugs.has(lower)) errors.push(`Room ${number}: slug must be unique.`);
@@ -202,7 +210,7 @@ function validateGallery(gallery) {
     const number = index + 1;
     if (!image.url) errors.push(`Gallery item ${number}: image URL is required.`);
     if (!image.alt) errors.push(`Gallery item ${number}: alt text is required.`);
-    if (image.url && !isValidHttpUrl(image.url)) errors.push(`Gallery item ${number}: image URL must be valid.`);
+    if (image.url && !isValidImageSource(image.url)) errors.push(`Gallery item ${number}: image must be a valid URL or /assets/images path.`);
   });
   return errors;
 }

@@ -1,10 +1,34 @@
 [
   {
-    "slug": "demo",
-    "name": "demo",
-    "capacity": "2",
-    "price": "23232",
-    "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
-    "description": "sdsdsd"
+    "slug": "cottage-room-one",
+    "name": "Cottage Room One",
+    "capacity": "2 Guests",
+    "price": "Contact for tariff",
+    "image": "/assets/images/room1.jpeg",
+    "description": "A comfortable cottage room with warm interiors, simple amenities, and easy access to the property views."
+  },
+  {
+    "slug": "cottage-room-two",
+    "name": "Cottage Room Two",
+    "capacity": "2 Guests",
+    "price": "Contact for tariff",
+    "image": "/assets/images/room2.jpeg",
+    "description": "A calm guest room designed for relaxed stays, with natural light and a quiet hillside setting."
+  },
+  {
+    "slug": "cottage-room-three",
+    "name": "Cottage Room Three",
+    "capacity": "2 Guests",
+    "price": "Contact for tariff",
+    "image": "/assets/images/room3.jpeg",
+    "description": "A cozy room option for couples or small stays, keeping the booking details clear and direct."
+  },
+  {
+    "slug": "cottage-room-four",
+    "name": "Cottage Room Four",
+    "capacity": "2 Guests",
+    "price": "Contact for tariff",
+    "image": "/assets/images/room4.jpeg",
+    "description": "A simple, restful cottage room with the essentials guests need before confirming dates on WhatsApp."
   }
 ]

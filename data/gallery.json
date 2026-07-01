@@ -1,26 +1,74 @@
 [
   {
-    "url": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
-    "alt": "Morning mist over tea garden"
+    "url": "/assets/images/exterior_view.jpeg",
+    "alt": "Exterior view of Tudor Farm Cottages"
   },
   {
-    "url": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80",
-    "alt": "Mountain horizon from cottage"
+    "url": "/assets/images/exterior_view2.jpeg",
+    "alt": "Cottage exterior surrounded by greenery"
   },
   {
-    "url": "https://images.unsplash.com/photo-1464890100898-a385f744067f?auto=format&fit=crop&w=1200&q=80",
-    "alt": "Warmly lit cottage lounge"
+    "url": "/assets/images/exterior_view3.jpeg",
+    "alt": "Hillside cottage view from the property"
   },
   {
-    "url": "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?auto=format&fit=crop&w=1200&q=80",
-    "alt": "Tea leaf rows at golden hour"
+    "url": "/assets/images/cottage_1.jpeg",
+    "alt": "Tudor Farm cottage building"
   },
   {
-    "url": "https://images.unsplash.com/photo-1470246973918-29a93221c455?auto=format&fit=crop&w=1200&q=80",
-    "alt": "Wooden room with scenic window"
+    "url": "/assets/images/Gate.jpeg",
+    "alt": "Entrance gate at Tudor Farm Cottages"
   },
   {
-    "url": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80",
-    "alt": "Clouds drifting above hills"
+    "url": "/assets/images/view.jpeg",
+    "alt": "Open hillside view from the farm"
+  },
+  {
+    "url": "/assets/images/room1.jpeg",
+    "alt": "Guest room with warm cottage interiors"
+  },
+  {
+    "url": "/assets/images/room2.jpeg",
+    "alt": "Comfortable cottage room with natural light"
+  },
+  {
+    "url": "/assets/images/room3.jpeg",
+    "alt": "Bedroom arranged for a relaxed stay"
+  },
+  {
+    "url": "/assets/images/room4.jpeg",
+    "alt": "Cottage room detail at Tudor Farm"
+  },
+  {
+    "url": "/assets/images/toilet.jpeg",
+    "alt": "Clean private bathroom for guests"
+  },
+  {
+    "url": "/assets/images/swimming_pool_day.jpeg",
+    "alt": "Swimming pool during the day"
+  },
+  {
+    "url": "/assets/images/pool_day2.jpeg",
+    "alt": "Daytime pool area at the cottages"
+  },
+  {
+    "url": "/assets/images/swimming_pool_night.jpeg",
+    "alt": "Swimming pool lit up at night"
+  },
+  {
+    "url": "/assets/images/pool_night.jpeg",
+    "alt": "Night view of the pool area"
+  },
+  {
+    "url": "/assets/images/night_view.jpeg",
+    "alt": "Night view around Tudor Farm Cottages"
+  },
+  {
+    "url": "/assets/images/duck.jpeg",
+    "alt": "Ducks around the farm property"
+  },
+  {
+    "url": "/assets/images/duck2.jpeg",
+    "alt": "Farm ducks near the cottages"
   }
 ]

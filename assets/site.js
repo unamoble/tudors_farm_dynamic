@@ -1,20 +1,6 @@
 export const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/unamoble/tudors_farm_dynamic/main/data';
 export const DEFAULT_MAP_EMBED = 'https://maps.google.com/maps?q=Rohini%20Tea%20Garden%2C%20Kurseong&t=&z=13&ie=UTF8&iwloc=&output=embed';
 
-const ROOMS_URL = "https://cdn.jsdelivr.net/gh/unamoble/tudors_farm_dynamic/data/rooms.json";
-
-fetch(ROOMS_URL)
-  .then(res => {
-    console.log("ROOMS STATUS:", res.status);
-    return res.json();
-  })
-  .then(data => {
-    console.log("ROOMS DATA:", data);
-  })
-  .catch(err => {
-    console.error("ROOMS ERROR:", err);
-  });
-
 const NAV_ITEMS = [
   { label: 'Home', href: '/index.html', page: 'home' },
   { label: 'Rooms', href: '/rooms.html', page: 'rooms' },
@@ -51,7 +37,10 @@ export function normalizeConfig(config = {}) {
 }
 
 export async function loadJson(fileName) {
-  const sources = [`${GITHUB_RAW_BASE}/${fileName}`, `/data/${fileName}`];
+  const isLocalHost = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
+  const sources = isLocalHost
+    ? [`/data/${fileName}`, `${GITHUB_RAW_BASE}/${fileName}`]
+    : [`${GITHUB_RAW_BASE}/${fileName}`, `/data/${fileName}`];
 
   let lastError = null;
 
@@ -433,6 +422,10 @@ export function galleryTileMarkup(image, { clickable = false, index = 0 } = {}) 
   const alt = escapeHtml(image.alt || 'Gallery image');
   const url = escapeHtml(image.url || '');
 
+  if (!url) {
+    return '';
+  }
+
   if (clickable) {
     return `
       <button class="gallery-grid__item reveal" type="button" data-gallery-index="${index}" data-gallery-url="${url}" data-gallery-alt="${alt}">
@@ -452,15 +445,16 @@ export function galleryTileMarkup(image, { clickable = false, index = 0 } = {}) 
 
 export function renderGalleryGrid(container, images, { limit = images.length, clickable = false } = {}) {
   if (!container) return;
+  const validImages = images.filter((image) => image?.url);
 
   console.debug('[tudors] renderGalleryGrid', {
     container,
-    count: images.length,
+    count: validImages.length,
     limit,
     clickable
   });
 
-  container.innerHTML = images
+  container.innerHTML = validImages
     .slice(0, limit)
     .map((image, index) => galleryTileMarkup(image, { clickable, index }))
     .join('');
@@ -499,50 +493,3 @@ export function createGalleryModal() {
 
   return { open, close };
 }
-document.addEventListener("DOMContentLoaded", async () => {
-  console.log("INIT START");
-
-  // Show loader
-  const loader = document.createElement('div');
-  loader.className = 'site-loader';
-  loader.innerHTML = `
-    <div class="site-loader__content">
-      <div class="site-loader__spinner"></div>
-      <div class="site-loader__text">
-        Loading
-        <span class="site-loader__dot"></span>
-        <span class="site-loader__dot"></span>
-        <span class="site-loader__dot"></span>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(loader);
-
-  try {
-    const { config, rooms, gallery } = await loadSiteData();
-
-    console.log("DATA LOADED:", rooms, gallery);
-
-    // 🛏️ Render rooms
-    const roomsContainer = document.querySelector("[data-rooms]");
-    renderRoomCards(roomsContainer, rooms, config.whatsappNumber, { large: true });
-
-    // 🌄 Render gallery
-    const galleryContainer = document.querySelector("[data-gallery]");
-    renderGalleryGrid(galleryContainer, gallery, { clickable: true });
-
-    // 🔧 Render header/footer
-    renderSiteChrome({ page: document.body.dataset.page, config });
-
-    // Hide loader with smooth fade
-    setTimeout(() => {
-      loader.classList.add('is-hidden');
-      setTimeout(() => loader.remove(), 400);
-    }, 300);
-
-  } catch (err) {
-    console.error("INIT ERROR:", err);
-    loader.classList.add('is-hidden');
-    setTimeout(() => loader.remove(), 400);
-  }
-});
