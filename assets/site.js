@@ -334,6 +334,8 @@ export function renderSiteChrome({ page, config }) {
 }
 
 export function initRevealAnimations() {
+  if (typeof document === 'undefined') return;
+
   const targets = document.querySelectorAll('.reveal');
 
   if (!('IntersectionObserver' in window) || targets.length === 0) {
@@ -416,6 +418,7 @@ export function renderRoomCards(container, rooms, whatsappNumber, { limit = room
   });
 
   container.innerHTML = rooms.slice(0, limit).map((room) => roomCardMarkup(room, whatsappNumber, { large })).join('');
+  initRevealAnimations();
 }
 
 export function galleryTileMarkup(image, { clickable = false, index = 0 } = {}) {
@@ -458,6 +461,7 @@ export function renderGalleryGrid(container, images, { limit = images.length, cl
     .slice(0, limit)
     .map((image, index) => galleryTileMarkup(image, { clickable, index }))
     .join('');
+  initRevealAnimations();
 }
 
 export function createGalleryModal() {
