@@ -1,5 +1,5 @@
 export const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/unamoble/tudors_farm_dynamic/main/data';
-export const DEFAULT_MAP_EMBED = 'https://maps.google.com/maps?q=Rohini%20Tea%20Garden%2C%20Kurseong&t=&z=13&ie=UTF8&iwloc=&output=embed';
+export const DEFAULT_MAP_EMBED = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3559.6557382632627!2d88.301937!3d26.850899899999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e4315c929d230b%3A0x70b955eb4fda3b09!2sTUDOR%20FARM%20COTTAGES!5e0!3m2!1sen!2sin!4v1782951969283!5m2!1sen!2sin';
 
 const NAV_ITEMS = [
   { label: 'Home', href: '/index.html', page: 'home' },
