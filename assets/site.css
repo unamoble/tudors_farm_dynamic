@@ -7,6 +7,8 @@
   --earth: #b08b5a;
   --ink: #1f2622;
   --muted: #627068;
+  --button-dark: #263238;
+  --button-dark-hover: #1b2428;
   --surface: rgba(255, 255, 255, 0.82);
   --border: rgba(40, 60, 46, 0.12);
   --shadow: 0 24px 60px rgba(25, 40, 32, 0.12);
@@ -456,14 +458,14 @@ body[data-page='home'] .page-main {
 .contact-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.2rem;
-  margin-top: 2rem;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
   justify-content: center;
   animation: fadeInDown 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.9s both;
 }
 
 .hero__actions {
-  margin-top: 2.4rem;
+  margin-top: 2rem;
 }
 
 .hero__actions .btn {
@@ -472,12 +474,12 @@ body[data-page='home'] .page-main {
 }
 
 .hero__actions .btn--primary {
-  box-shadow: 0 18px 44px rgba(176, 139, 90, 0.34);
+  box-shadow: 0 12px 28px rgba(176, 139, 90, 0.24);
 }
 
 .hero__actions .btn--primary:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 26px 60px rgba(176, 139, 90, 0.46);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(176, 139, 90, 0.32);
 }
 
 .hero__actions .btn--ghost {
@@ -489,8 +491,8 @@ body[data-page='home'] .page-main {
 .hero__actions .btn--ghost:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.6);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(255, 255, 255, 0.08);
 }
 
 .hero__actions .btn:active {
@@ -506,12 +508,13 @@ body[data-page='home'] .page-main {
   justify-content: center;
   gap: 0.5rem;
   border: 0;
-  border-radius: 999px;
-  padding: 1.05rem 1.8rem;
+  border-radius: 12px;
+  min-height: 2.75rem;
+  padding: 0.72rem 1.15rem;
   font: inherit;
   font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: 0.3px;
+  font-size: 0.88rem;
+  letter-spacing: 0.01em;
   transition:
     transform 200ms var(--transition),
     box-shadow 200ms var(--transition),
@@ -524,8 +527,8 @@ body[data-page='home'] .page-main {
 .section-link:hover,
 .contact-link:hover,
 .modal-close:hover {
-  transform: translateY(-3px);
-  scale: 1.02;
+  transform: translateY(-2px);
+  scale: 1.01;
 }
 
 .btn--primary,
@@ -533,14 +536,23 @@ body[data-page='home'] .page-main {
 .contact-link--primary {
   background: linear-gradient(135deg, var(--earth), #cfaa70);
   color: #fff;
-  box-shadow: 0 16px 40px rgba(176, 139, 90, 0.28);
+  box-shadow: 0 10px 24px rgba(176, 139, 90, 0.22);
 }
 
 .btn--primary:hover,
 .section-link--primary:hover,
 .contact-link--primary:hover {
-  box-shadow: 0 22px 50px rgba(176, 139, 90, 0.36);
+  box-shadow: 0 14px 30px rgba(176, 139, 90, 0.3);
   background: linear-gradient(135deg, #a87a48, #c29f63);
+}
+
+body[data-page] .btn--primary,
+body[data-page] .section-link--primary,
+body[data-page] .contact-link--primary,
+body[data-page] .btn--primary:hover,
+body[data-page] .section-link--primary:hover,
+body[data-page] .contact-link--primary:hover {
+  color: #fff;
 }
 
 .btn--ghost,
@@ -551,19 +563,37 @@ body[data-page='home'] .page-main {
   color: #fff;
 }
 
+body[data-page] .btn--ghost,
+body[data-page] .section-link--ghost,
+body[data-page] .contact-link--ghost,
+body[data-page] .btn--ghost:hover,
+body[data-page] .section-link--ghost:hover,
+body[data-page] .contact-link--ghost:hover {
+  color: #fff;
+}
+
 .btn--dark,
 .section-link--dark,
 .contact-link--dark {
-  background: var(--forest);
+  background: linear-gradient(135deg, var(--button-dark), #344347);
   color: #fff;
-  box-shadow: 0 14px 32px rgba(41, 74, 58, 0.2);
+  box-shadow: 0 10px 24px rgba(27, 36, 40, 0.16);
 }
 
 .btn--dark:hover,
 .section-link--dark:hover,
 .contact-link--dark:hover {
-  background: var(--forest-deep);
-  box-shadow: 0 18px 42px rgba(31, 55, 43, 0.28);
+  background: linear-gradient(135deg, var(--button-dark-hover), #2b383c);
+  box-shadow: 0 14px 30px rgba(27, 36, 40, 0.23);
+}
+
+body[data-page] .btn--dark,
+body[data-page] .section-link--dark,
+body[data-page] .contact-link--dark,
+body[data-page] .btn--dark:hover,
+body[data-page] .section-link--dark:hover,
+body[data-page] .contact-link--dark:hover {
+  color: #f8fafc;
 }
 
 .section-heading {
@@ -2477,8 +2507,9 @@ body[data-page='contact'] .contact-map {
   }
 
   .hero__actions .btn {
-    width: 100%;
-    padding: 1rem 1.35rem;
+    width: auto;
+    min-width: min(13rem, 100%);
+    padding: 0.78rem 1rem;
   }
 
   .section-grid--gallery {
