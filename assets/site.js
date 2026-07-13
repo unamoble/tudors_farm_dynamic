@@ -11,6 +11,43 @@ const NAV_ITEMS = [
 
 const FALLBACK_SITE_TITLE = 'Tudor Farm Cottages | Rohini Tea Garden, Kurseong';
 const FALLBACK_WHATSAPP_NUMBER = '919932588052';
+const SITE_SUSPENDED = true;
+
+export function renderSuspensionNotice() {
+  if (!SITE_SUSPENDED || typeof document === 'undefined') {
+    return false;
+  }
+
+  document.title = 'Account Suspended';
+
+  let robotsMeta = document.querySelector('meta[name="robots"]');
+  if (!robotsMeta) {
+    robotsMeta = document.createElement('meta');
+    robotsMeta.setAttribute('name', 'robots');
+    document.head.appendChild(robotsMeta);
+  }
+  robotsMeta.setAttribute('content', 'noindex,nofollow');
+
+  document.body.innerHTML = `
+    <main style="min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(180deg,#fff8f6 0%,#f2e5e2 100%);font-family:'Manrope',sans-serif;">
+      <section style="width:min(680px,100%);text-align:center;background:#fff;border:1px solid rgba(126,31,42,.18);border-radius:20px;padding:32px 24px;box-shadow:0 20px 40px rgba(126,31,42,.14);">
+        <p style="margin:0 0 14px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#7e1f2a;font-weight:800;">Service Status</p>
+        <h1 style="margin:0 0 10px;font-size:clamp(2rem,6vw,3rem);line-height:1.1;color:#3a1017;">Account suspended</h1>
+        <p style="margin:0;font-size:1rem;line-height:1.7;color:#6f4248;">This website is temporarily unavailable. Clear the invoice to restore the services.</p>
+      </section>
+    </main>
+  `;
+
+  return true;
+}
+
+if (SITE_SUSPENDED && typeof window !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderSuspensionNotice, { once: true });
+  } else {
+    renderSuspensionNotice();
+  }
+}
 
 export function escapeHtml(value) {
   return String(value)
