@@ -11,7 +11,7 @@ const NAV_ITEMS = [
 
 const FALLBACK_SITE_TITLE = 'Tudor Farm Cottages | Rohini Tea Garden, Kurseong';
 const FALLBACK_WHATSAPP_NUMBER = '919932588052';
-const SITE_SUSPENDED = true;
+const SITE_SUSPENDED = false; // Set to true to simulate a suspended site for testing
 
 export function renderSuspensionNotice() {
   if (!SITE_SUSPENDED || typeof document === 'undefined') {
