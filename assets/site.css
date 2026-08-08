@@ -1561,6 +1561,16 @@ body[data-page='about'] .page-section--about-page > * {
   margin-bottom: 0.25rem;
 }
 
+.contact-list a {
+  color: var(--forest);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.contact-list a:hover {
+  text-decoration: underline;
+}
+
 .contact-map {
   width: 100%;
   min-height: 380px;

@@ -63,6 +63,7 @@ export function normalizeConfig(config = {}) {
     siteTitle: config.siteTitle || FALLBACK_SITE_TITLE,
     siteSubtitle: config.siteSubtitle || 'Boutique hillside cottages in Rohini Tea Garden, Kurseong',
     whatsappNumber: config.whatsappNumber || FALLBACK_WHATSAPP_NUMBER,
+    secondaryPhoneNumber: config.secondaryPhoneNumber || '',
     heroImage:
       config.heroImage ||
       'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=80',
@@ -242,6 +243,12 @@ export function renderSiteChrome({ page, config }) {
     'Hi, I want to book a stay at Tudor Farm Cottages'
   );
   const currentYear = new Date().getFullYear();
+  const primaryPhoneDisplay = formatPhoneDisplay(config.whatsappNumber);
+  const secondaryPhoneDisplay = config.secondaryPhoneNumber ? formatPhoneDisplay(config.secondaryPhoneNumber) : '';
+  const primaryPhoneLink = `tel:${String(config.whatsappNumber).replace(/\D/g, '')}`;
+  const secondaryPhoneLink = config.secondaryPhoneNumber
+    ? `tel:${String(config.secondaryPhoneNumber).replace(/\D/g, '')}`
+    : '';
 
   if (header) {
     header.classList.add('site-header');
@@ -345,7 +352,8 @@ export function renderSiteChrome({ page, config }) {
           <div class="site-footer__section">
             <h4 class="site-footer__heading">Connect</h4>
             <div class="site-footer__links">
-              <a href="/contact.html">${escapeHtml(formatPhoneDisplay(config.whatsappNumber))}</a>
+              <a href="${primaryPhoneLink}">${escapeHtml(primaryPhoneDisplay)}</a>
+              ${secondaryPhoneDisplay ? `<a href="${secondaryPhoneLink}">${escapeHtml(secondaryPhoneDisplay)}</a>` : ''}
               <a href="/contact.html#map">Rohini Tea Garden, Kurseong</a>
               <a href="${whatsappLink}" target="_blank" rel="noopener noreferrer">WhatsApp booking</a>
             </div>

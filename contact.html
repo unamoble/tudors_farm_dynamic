@@ -86,6 +86,10 @@
                     Send a WhatsApp message for availability, check-in timing, and room-specific
                     questions. You can also find us on the map for easy arrival.
                   </p>
+                  <ul class="contact-list" aria-label="Contact numbers">
+                    <li><div><strong>Call or WhatsApp</strong><a data-contact-primary-phone href="#"></a></div></li>
+                    <li><div><strong>Second contact number</strong><a data-contact-secondary-phone href="#"></a></div></li>
+                  </ul>
                   <div class="contact-highlights">
                     <div class="contact-highlight">
                       <span class="contact-highlight__label">Response</span>
@@ -143,8 +147,8 @@
         document.title = `Contact | ${config.siteTitle}`;
         renderSiteChrome({ page: 'contact', config });
 
-        const phoneText = formatPhoneDisplay(config.whatsappNumber);
-        const phoneLink = document.querySelector('[data-contact-phone]');
+        const phoneLink = document.querySelector('[data-contact-primary-phone]');
+        const secondaryPhoneLink = document.querySelector('[data-contact-secondary-phone]');
         const whatsappLink = document.querySelector('[data-contact-whatsapp]');
         const mapFrame = document.querySelector('[data-contact-map]');
         const whatsappUrl = buildWhatsAppLink(
@@ -153,8 +157,13 @@
         );
 
         if (phoneLink) {
-          phoneLink.textContent = phoneText;
-          phoneLink.href = `tel:${phoneText.replace(/\s/g, '')}`;
+          phoneLink.textContent = formatPhoneDisplay(config.whatsappNumber);
+          phoneLink.href = `tel:${String(config.whatsappNumber).replace(/\D/g, '')}`;
+        }
+
+        if (secondaryPhoneLink) {
+          secondaryPhoneLink.textContent = formatPhoneDisplay(config.secondaryPhoneNumber);
+          secondaryPhoneLink.href = `tel:${String(config.secondaryPhoneNumber).replace(/\D/g, '')}`;
         }
 
         if (whatsappLink) {
