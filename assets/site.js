@@ -11,7 +11,7 @@ const NAV_ITEMS = [
 
 const FALLBACK_SITE_TITLE = 'Tudor Farm Cottages | Rohini Tea Garden, Kurseong';
 const FALLBACK_WHATSAPP_NUMBER = '919932588052';
-const SITE_SUSPENDED = true;
+const SITE_SUSPENDED = false;
 
 export function renderSuspensionNotice() {
   if (!SITE_SUSPENDED || typeof document === 'undefined') {
@@ -63,6 +63,7 @@ export function normalizeConfig(config = {}) {
     siteTitle: config.siteTitle || FALLBACK_SITE_TITLE,
     siteSubtitle: config.siteSubtitle || 'Boutique hillside cottages in Rohini Tea Garden, Kurseong',
     whatsappNumber: config.whatsappNumber || FALLBACK_WHATSAPP_NUMBER,
+    secondaryWhatsappNumber: config.secondaryWhatsappNumber || '',
     heroImage:
       config.heroImage ||
       'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=80',
@@ -133,6 +134,14 @@ export function formatPhoneDisplay(number) {
   }
 
   return `+${digits}`;
+}
+
+export function getContactNumbers(config = {}) {
+  const numbers = [config.whatsappNumber || FALLBACK_WHATSAPP_NUMBER, config.secondaryWhatsappNumber || '']
+    .map((number) => String(number).replace(/\D/g, ''))
+    .filter(Boolean);
+
+  return [...new Set(numbers)];
 }
 
 function formatDateInputValue(date) {
@@ -237,8 +246,10 @@ export function renderSiteChrome({ page, config }) {
   const header = document.querySelector('[data-site-header]');
   const footer = document.querySelector('[data-site-footer]');
   const floatingButton = document.querySelector('[data-floating-whatsapp]');
+  const contactNumbers = getContactNumbers(config);
+  const primaryWhatsappNumber = contactNumbers[0] || FALLBACK_WHATSAPP_NUMBER;
   const whatsappLink = buildWhatsAppLink(
-    config.whatsappNumber,
+    primaryWhatsappNumber,
     'Hi, I want to book a stay at Tudor Farm Cottages'
   );
   const currentYear = new Date().getFullYear();
@@ -345,7 +356,12 @@ export function renderSiteChrome({ page, config }) {
           <div class="site-footer__section">
             <h4 class="site-footer__heading">Connect</h4>
             <div class="site-footer__links">
-              <a href="/contact.html">${escapeHtml(formatPhoneDisplay(config.whatsappNumber))}</a>
+              ${contactNumbers
+                .map(
+                  (number) =>
+                    `<a href="tel:+${escapeHtml(number)}">${escapeHtml(formatPhoneDisplay(number))}</a>`
+                )
+                .join('')}
               <a href="/contact.html#map">Rohini Tea Garden, Kurseong</a>
               <a href="${whatsappLink}" target="_blank" rel="noopener noreferrer">WhatsApp booking</a>
             </div>

@@ -8,6 +8,7 @@ const state = {
     siteTitle: '',
     siteSubtitle: '',
     whatsappNumber: '',
+    secondaryWhatsappNumber: '',
     heroImage: '',
     mapEmbed: '',
     aboutText: ''
@@ -55,6 +56,7 @@ function configToDom() {
   byId('site-title').value = state.config.siteTitle || '';
   byId('site-subtitle').value = state.config.siteSubtitle || '';
   byId('whatsapp').value = state.config.whatsappNumber || '';
+  byId('whatsapp-secondary').value = state.config.secondaryWhatsappNumber || '';
   byId('hero-image').value = state.config.heroImage || '';
   byId('map-embed').value = state.config.mapEmbed || '';
   byId('about-text').value = state.config.aboutText || '';
@@ -65,6 +67,7 @@ function domToConfig() {
     siteTitle: byId('site-title').value.trim(),
     siteSubtitle: byId('site-subtitle').value.trim(),
     whatsappNumber: byId('whatsapp').value.trim(),
+    secondaryWhatsappNumber: byId('whatsapp-secondary').value.trim(),
     heroImage: byId('hero-image').value.trim(),
     mapEmbed: byId('map-embed').value.trim(),
     aboutText: byId('about-text').value.trim()
@@ -352,6 +355,7 @@ async function loadDashboard() {
       siteTitle: config.siteTitle || '',
       siteSubtitle: config.siteSubtitle || '',
       whatsappNumber: config.whatsappNumber || '',
+      secondaryWhatsappNumber: config.secondaryWhatsappNumber || '',
       heroImage: config.heroImage || '',
       mapEmbed: config.mapEmbed || '',
       aboutText: config.aboutText || ''
