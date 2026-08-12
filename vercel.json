@@ -4,5 +4,23 @@
     "api/*.js": {
       "maxDuration": 10
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/:page(about|contact|gallery|rooms).html",
+      "destination": "/:page",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/:page(about|contact|gallery|rooms)",
+      "destination": "/:page.html"
+    }
+  ]
 }

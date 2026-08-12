@@ -1,0 +1,34 @@
+# Clean, canonical URLs for Apache hosts.
+# Requires mod_rewrite. Keep this file in the same directory as index.html.
+Options -MultiViews
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Redirect only browser requests for index.html / .html pages. Using
+  # THE_REQUEST prevents these redirects from firing on the internal rewrite.
+  RewriteCond %{THE_REQUEST} \s/+index\.html(?:[\s?]) [NC]
+  RewriteRule ^index\.html$ / [R=301,L,NE]
+
+  RewriteCond %{THE_REQUEST} \s/+(.+)\.html(?:[\s?]) [NC]
+  RewriteRule ^(.+)\.html$ /$1 [R=301,L,NE]
+
+  # Serve /about, /contact, etc. from their existing .html files.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+?)/?$ $1.html [END]
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Small, safe response-hardening defaults.
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+# Do not expose environment files or repository metadata if they are present.
+<FilesMatch "^(?:\.env(?:\..*)?|\.git|package(?:-lock)?\.json)$">
+  Require all denied
+</FilesMatch>
