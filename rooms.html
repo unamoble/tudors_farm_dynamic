@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Browse all Tudor Farm Cottages rooms in Rohini Tea Garden, Kurseong with direct WhatsApp booking."
+      content="Explore cottage accommodation at Tudor Farm Cottages, a farm stay in Rohini Tea Garden, Kurseong, and enquire directly on WhatsApp."
     />
-    <title>Rooms | Tudor Farm Cottages</title>
+    <title>Rooms & Accommodation | Tudor Farm Cottages, Rohini</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -22,11 +22,17 @@
     <link rel="canonical" href="https://tudorsfarmcottages.in/rooms">
     <meta name="robots" content="index,follow">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Rooms | Tudor Farm Cottages">
-    <meta property="og:description" content="Browse room details and book direct on WhatsApp.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=80">
+    <meta property="og:title" content="Rooms & Accommodation | Tudor Farm Cottages, Rohini">
+    <meta property="og:description" content="Browse cottage accommodation at our Rohini Tea Garden farm stay and enquire directly on WhatsApp.">
+    <meta property="og:image" content="https://tudorsfarmcottages.in/assets/images/room2.jpeg">
     <meta property="og:url" content="https://tudorsfarmcottages.in/rooms">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Rooms & Accommodation | Tudor Farm Cottages, Rohini">
+    <meta name="twitter:description" content="Browse cottage accommodation at our Rohini Tea Garden farm stay and enquire directly on WhatsApp.">
+    <meta name="twitter:image" content="https://tudorsfarmcottages.in/assets/images/room2.jpeg">
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://tudorsfarmcottages.in/"},{"@type":"ListItem","position":2,"name":"Rooms","item":"https://tudorsfarmcottages.in/rooms"}]}
+    </script>
   </head>
   <body data-page="rooms">
     <div class="site-shell">
@@ -35,7 +41,7 @@
         <section class="page-section page-section--rooms">
           <div class="section-heading reveal">
             <p class="eyebrow" style="color: var(--forest); border-color: rgba(41, 74, 58, 0.14); background: rgba(41, 74, 58, 0.06);">Rooms</p>
-            <h2>Every room, ready to book direct.</h2>
+            <h1>Rooms and accommodation at Tudor Farm Cottages.</h1>
             <p>All available rooms are pulled from the same GitHub JSON used by the homepage and admin panel.</p>
           </div>
 
@@ -68,6 +74,7 @@
 
             <div class="rooms-showcase__content">
               <div id="rooms-grid" class="section-grid section-grid--rooms section-grid--rooms-page"></div>
+              <noscript><p>Tudor Farm Cottages offers Cottage Room One, Cottage Room Two, Cottage Room Three, and Cottage Room Four. Each accommodates 2 guests; contact us for tariff and availability.</p></noscript>
             </div>
           </div>
         </section>
@@ -87,7 +94,6 @@
       async function init() {
         try {
           const { config, rooms } = await loadSiteData();
-          document.title = `Rooms | ${config.siteTitle}`;
           renderSiteChrome({ page: 'rooms', config });
           renderRoomCards(document.getElementById('rooms-grid'), rooms, config.whatsappNumber, {
             large: true

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Tudor Farm Cottages in Rohini Tea Garden, Kurseong. Boutique homestay with scenic tea garden views and peaceful mountain stays."
+      content="Tudor Farm Cottages is a Rohini farm stay in Rohini Tea Garden, Kurseong, offering peaceful cottages and direct booking for a Darjeeling stay."
     />
-    <title>Tudor Farm Cottages | Rohini Tea Garden, Kurseong</title>
+    <title>Tudor Farm Cottages | Rohini Farm Stay near Darjeeling</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -22,14 +22,42 @@
     <link rel="canonical" href="https://tudorsfarmcottages.in/">
     <meta name="robots" content="index,follow">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Tudor Farm Cottages | Rohini Tea Garden, Kurseong">
-    <meta property="og:description" content="Boutique hillside cottages with direct WhatsApp booking. Quiet stays in Rohini Tea Garden, Kurseong.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=80">
+    <meta property="og:title" content="Tudor Farm Cottages | Rohini Farm Stay near Darjeeling">
+    <meta property="og:description" content="A peaceful farm stay in Rohini Tea Garden, Kurseong, with cottages and direct booking for your Darjeeling stay.">
+    <meta property="og:image" content="https://tudorsfarmcottages.in/assets/images/exterior_view.jpeg">
     <meta property="og:url" content="https://tudorsfarmcottages.in/">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Tudor Farm Cottages | Rohini Tea Garden, Kurseong">
-    <meta name="twitter:description" content="Boutique hillside cottages with direct WhatsApp booking. Quiet stays in Rohini Tea Garden, Kurseong.">
-    <meta name="twitter:image" content="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=80">
+    <meta name="twitter:title" content="Tudor Farm Cottages | Rohini Farm Stay near Darjeeling">
+    <meta name="twitter:description" content="A peaceful farm stay in Rohini Tea Garden, Kurseong, with cottages and direct booking for your Darjeeling stay.">
+    <meta name="twitter:image" content="https://tudorsfarmcottages.in/assets/images/exterior_view.jpeg">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "LodgingBusiness",
+            "@id": "https://tudorsfarmcottages.in/#lodging",
+            "name": "Tudor Farm Cottages",
+            "description": "Farm stay cottages in Rohini Tea Garden, Kurseong, for stays in the Darjeeling hills.",
+            "url": "https://tudorsfarmcottages.in/",
+            "image": "https://tudorsfarmcottages.in/assets/images/exterior_view.jpeg",
+            "telephone": "+919932588052",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Rohini Tea Garden, Kurseong",
+              "addressRegion": "West Bengal",
+              "addressCountry": "IN"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://tudorsfarmcottages.in/#website",
+            "name": "Tudor Farm Cottages",
+            "url": "https://tudorsfarmcottages.in/"
+          }
+        ]
+      }
+    </script>
   </head>
   <body data-page="home">
     <div class="site-shell">
@@ -39,18 +67,19 @@
         <section class="hero" id="home">
           <img
             class="hero__media"
-            src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=2000&q=80"
-            alt="Tea garden and mountain view"
+            src="/assets/images/room2.jpeg"
+            alt="Cottage room at Tudor Farm Cottages in Rohini Tea Garden"
             loading="eager"
+            fetchpriority="high"
           />
           <div class="hero__overlay"></div>
           <div class="hero__texture"></div>
           <div class="hero__content">
             <p class="eyebrow">Rohini Tea Garden, Kurseong</p>
-            <h1 class="hero__title">Quiet hillside cottages made for slow escapes.</h1>
+            <h1 class="hero__title">A peaceful farm stay in Rohini, near Darjeeling.</h1>
             <p class="hero__lead">
-              Tudor Farm Cottages blends tea-garden views, calm interiors, and direct WhatsApp
-              booking for an effortless stay in the Darjeeling hills.
+              Tudor Farm Cottages is a farm stay in Rohini Tea Garden, Kurseong, with calm interiors,
+              tea-garden views, and direct WhatsApp booking for a stay in the Darjeeling hills.
             </p>
             <div class="hero__actions">
               <a class="btn btn--primary" href="#featured-rooms">Explore Rooms</a>
@@ -240,7 +269,6 @@
         try {
           const { config, rooms, gallery } = await loadSiteData();
 
-          document.title = config.siteTitle;
           renderSiteChrome({ page: 'home', config });
           const aboutPreview = document.querySelector('[data-about-preview-copy]');
           if (aboutPreview) {

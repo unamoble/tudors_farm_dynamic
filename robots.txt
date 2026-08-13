@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
-Host: tudorsfarmcottages.in
+Disallow: /admin/
+Disallow: /api/
 Sitemap: https://tudorsfarmcottages.in/sitemap.xml

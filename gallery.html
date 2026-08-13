@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Gallery of Tudor Farm Cottages in Rohini Tea Garden, Kurseong. Click images to enlarge."
+      content="View Tudor Farm Cottages in Rohini Tea Garden, Kurseong: cottages, rooms, pool, gardens, and peaceful farm-stay surroundings."
     />
-    <title>Gallery | Tudor Farm Cottages</title>
+    <title>Farm Stay Gallery | Tudor Farm Cottages, Rohini</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -22,11 +22,15 @@
     <link rel="canonical" href="https://tudorsfarmcottages.in/gallery">
     <meta name="robots" content="index,follow">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Gallery | Tudor Farm Cottages">
-    <meta property="og:description" content="Property moments and full-size previews. Tap any photo to enlarge.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=80">
+    <meta property="og:title" content="Farm Stay Gallery | Tudor Farm Cottages, Rohini">
+    <meta property="og:description" content="See cottages, rooms, pool, gardens, and farm-stay surroundings at Tudor Farm Cottages in Rohini Tea Garden.">
+    <meta property="og:image" content="https://tudorsfarmcottages.in/assets/images/exterior_view.jpeg">
     <meta property="og:url" content="https://tudorsfarmcottages.in/gallery">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Farm Stay Gallery | Tudor Farm Cottages, Rohini">
+    <meta name="twitter:description" content="See cottages, rooms, pool, gardens, and farm-stay surroundings at Tudor Farm Cottages in Rohini Tea Garden.">
+    <meta name="twitter:image" content="https://tudorsfarmcottages.in/assets/images/exterior_view.jpeg">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://tudorsfarmcottages.in/"},{"@type":"ListItem","position":2,"name":"Gallery","item":"https://tudorsfarmcottages.in/gallery"}]}</script>
   </head>
   <body data-page="gallery">
     <div class="site-shell">
@@ -35,7 +39,7 @@
         <section class="page-section page-section--gallery page-section--gallery-page">
           <div class="section-heading reveal">
             <p class="eyebrow" style="color: var(--forest); border-color: rgba(41, 74, 58, 0.14); background: rgba(41, 74, 58, 0.06);">Gallery</p>
-            <h2>Property moments with a larger view.</h2>
+            <h1>Gallery of Tudor Farm Cottages in Rohini Tea Garden.</h1>
             <p>Hover for depth, tap for a larger image, and keep the booking flow close at hand.</p>
           </div>
 
@@ -104,7 +108,6 @@
       async function init() {
         try {
           const { config, gallery } = await loadSiteData();
-          document.title = `Gallery | ${config.siteTitle}`;
           renderSiteChrome({ page: 'gallery', config });
           renderGalleryGrid(document.getElementById('gallery-grid'), gallery, {
             clickable: true
