@@ -4,10 +4,14 @@ const ALLOWED_PATHS = new Set([
   'data/config.json'
 ]);
 
+import { requireAuthenticatedRequest } from './auth.js';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+
+  if (!requireAuthenticatedRequest(req, res)) return;
 
   try {
     const token = process.env.GITHUB_TOKEN;
@@ -16,7 +20,7 @@ export default async function handler(req, res) {
     const branch = process.env.GITHUB_BRANCH || 'main';
 
     if (!token || !owner || !repo) {
-      return res.status(500).json({ error: 'Missing GitHub environment variables' });
+      return res.status(500).json({ error: 'Service configuration error' });
     }
 
     const { path, content, message } = req.body || {};
@@ -43,7 +47,7 @@ export default async function handler(req, res) {
 
     if (!getResponse.ok) {
       return res.status(getResponse.status).json({
-        error: `Failed to read existing file: ${await getResponse.text()}`
+        error: 'Unable to save changes at this time'
       });
     }
 
@@ -69,7 +73,7 @@ export default async function handler(req, res) {
 
     if (!updateResponse.ok) {
       return res.status(updateResponse.status).json({
-        error: `Failed to update file: ${await updateResponse.text()}`
+        error: 'Unable to save changes at this time'
       });
     }
 
@@ -79,6 +83,6 @@ export default async function handler(req, res) {
       commitSha: result.commit?.sha || null
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message || 'Unknown server error' });
+    return res.status(500).json({ error: 'Unable to save changes at this time' });
   }
 }

@@ -1,5 +1,4 @@
 const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/unamoble/tudors_farm_dynamic/main/data';
-const ADMIN_PASSWORD = 'tudor-admin-123';
 
 const state = {
   loggedIn: false,
@@ -334,7 +333,12 @@ function bindEditorEvents() {
     }
   });
 
-  byId('logout-btn').addEventListener('click', () => {
+  byId('logout-btn').addEventListener('click', async () => {
+    try {
+      await fetch('/api/logout', { method: 'POST', credentials: 'same-origin' });
+    } catch {
+      // Clear the local UI even if the network request fails; the cookie will expire shortly.
+    }
     state.loggedIn = false;
     byId('admin-app').classList.add('hide');
     byId('login-panel').classList.remove('hide');
@@ -371,25 +375,39 @@ async function loadDashboard() {
   }
 }
 
-function login() {
+async function login() {
   const password = byId('admin-password').value;
-  if (password !== ADMIN_PASSWORD) {
-    showLoginStatus('Invalid password.', true);
+  if (!password) {
+    showLoginStatus('Enter your password.', true);
     return;
   }
 
-  state.loggedIn = true;
-  showLoginStatus('');
-  byId('login-panel').classList.add('hide');
-  byId('admin-app').classList.remove('hide');
-  loadDashboard();
+  try {
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({ password })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || 'Unable to sign in.');
+
+    byId('admin-password').value = '';
+    state.loggedIn = true;
+    showLoginStatus('');
+    byId('login-panel').classList.add('hide');
+    byId('admin-app').classList.remove('hide');
+    await loadDashboard();
+  } catch (error) {
+    showLoginStatus(error.message || 'Unable to sign in.', true);
+  }
 }
 
 function init() {
   bindEditorEvents();
-  byId('login-btn').addEventListener('click', login);
+  byId('login-btn').addEventListener('click', () => { void login(); });
   byId('admin-password').addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') login();
+    if (event.key === 'Enter') void login();
   });
 }
 
