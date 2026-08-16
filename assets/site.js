@@ -358,6 +358,14 @@ export function renderSiteChrome({ page, config }) {
               <a href="${whatsappLink}" target="_blank" rel="noopener noreferrer">WhatsApp booking</a>
             </div>
           </div>
+
+          <div class="site-footer__section">
+            <h4 class="site-footer__heading">Policies</h4>
+            <div class="site-footer__links">
+              <a href="/privacy-policy.html">Privacy Policy</a>
+              <a href="/refund-cancellation-policy.html">Refund & Cancellation Policy</a>
+            </div>
+          </div>
         </div>
         <div class="site-footer__divider"></div>
         <div class="site-footer__bottom">

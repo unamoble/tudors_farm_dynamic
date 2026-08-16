@@ -20,4 +20,12 @@
     <loc>https://tudorsfarmcottages.in/contact</loc>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://tudorsfarmcottages.in/privacy-policy</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://tudorsfarmcottages.in/refund-cancellation-policy</loc>
+    <priority>0.5</priority>
+  </url>
 </urlset>
