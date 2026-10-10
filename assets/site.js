@@ -474,18 +474,26 @@ export function renderRoomCards(container, rooms, whatsappNumber, { limit = room
   initRevealAnimations();
 }
 
+function isVideoUrl(value = '') {
+  return /\.(mp4|webm|ogg|mov)(?:[?#].*)?$/i.test(String(value).trim());
+}
+
 export function galleryTileMarkup(image, { clickable = false, index = 0 } = {}) {
-  const alt = escapeHtml(image.alt || 'Gallery image');
+  const alt = escapeHtml(image.alt || 'Gallery media');
   const url = escapeHtml(image.url || '');
 
   if (!url) {
     return '';
   }
 
+  const mediaMarkup = isVideoUrl(url)
+    ? `<video src="${url}" muted playsinline preload="metadata" aria-label="${alt}"></video>`
+    : `<img src="${url}" alt="${alt}" loading="lazy" />`;
+
   if (clickable) {
     return `
       <button class="gallery-grid__item reveal" type="button" data-gallery-index="${index}" data-gallery-url="${url}" data-gallery-alt="${alt}">
-        <img src="${url}" alt="${alt}" loading="lazy" />
+        ${mediaMarkup}
         <span class="gallery-grid__caption">${alt}</span>
       </button>
     `;
@@ -493,7 +501,7 @@ export function galleryTileMarkup(image, { clickable = false, index = 0 } = {}) 
 
   return `
     <figure class="gallery-grid__item reveal">
-      <img src="${url}" alt="${alt}" loading="lazy" />
+      ${mediaMarkup}
       <figcaption class="gallery-grid__caption">${alt}</figcaption>
     </figure>
   `;
@@ -519,23 +527,67 @@ export function renderGalleryGrid(container, images, { limit = images.length, cl
 
 export function createGalleryModal() {
   const modal = document.querySelector('[data-gallery-modal]');
-  const modalImage = modal?.querySelector('[data-gallery-modal-image]');
+  let modalMedia = modal?.querySelector('[data-gallery-modal-image]');
   const modalTitle = modal?.querySelector('[data-gallery-modal-title]');
   const closeButton = modal?.querySelector('[data-gallery-modal-close]');
 
+  function ensureVideoElement() {
+    if (!modal || !modalMedia || modalMedia.tagName === 'VIDEO') {
+      return modalMedia;
+    }
+
+    const video = document.createElement('video');
+    video.className = modalMedia.className;
+    video.dataset.galleryModalImage = 'true';
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = 'metadata';
+    modalMedia.replaceWith(video);
+    modalMedia = video;
+    return modalMedia;
+  }
+
+  function ensureImageElement() {
+    if (!modal || !modalMedia || modalMedia.tagName === 'IMG') {
+      return modalMedia;
+    }
+
+    const image = document.createElement('img');
+    image.className = modalMedia.className;
+    image.dataset.galleryModalImage = 'true';
+    image.alt = '';
+    modalMedia.replaceWith(image);
+    modalMedia = image;
+    return modalMedia;
+  }
+
   function open(image) {
-    if (!modal || !modalImage || !modalTitle) return;
-    modalImage.src = image.url;
-    modalImage.alt = image.alt;
-    modalTitle.textContent = image.alt;
+    if (!modal || !modalMedia || !modalTitle) return;
+
+    if (isVideoUrl(image.url)) {
+      modalMedia = ensureVideoElement();
+      modalMedia.src = image.url;
+      modalMedia.setAttribute('controls', 'controls');
+      modalMedia.setAttribute('playsinline', 'true');
+      modalMedia.removeAttribute('alt');
+    } else {
+      modalMedia = ensureImageElement();
+      modalMedia.src = image.url;
+      modalMedia.alt = image.alt || '';
+    }
+
+    modalTitle.textContent = image.alt || '';
     modal.hidden = false;
     document.body.classList.add('menu-open');
   }
 
   function close() {
-    if (!modal || !modalImage || !modalTitle) return;
+    if (!modal || !modalMedia || !modalTitle) return;
     modal.hidden = true;
-    modalImage.src = '';
+    modalMedia.removeAttribute('src');
+    if (modalMedia.tagName === 'IMG') {
+      modalMedia.alt = '';
+    }
     modalTitle.textContent = '';
     document.body.classList.remove('menu-open');
   }

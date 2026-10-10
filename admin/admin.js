@@ -117,13 +117,13 @@ function galleryTemplate(image, index) {
     <div class="item-card" data-gallery-index="${index}">
       <div class="grid two">
         <div style="grid-column: 1 / -1;">
-          <label>Image URL</label>
+          <label>Image/Video URL</label>
           <input data-field="url" value="${escapeHtml(image.url || '')}" placeholder="/assets/images/exterior_view.jpeg" />
-          <p style="margin:6px 0 0; color:#556; font-size:0.9rem;">Use a hosted image URL or a local path such as <em>/assets/images/exterior_view.jpeg</em>.</p>
+          <p style="margin:6px 0 0; color:#556; font-size:0.9rem;">Use a hosted image or video URL, or a local path such as <em>/assets/images/exterior_view.jpeg</em> or <em>/assets/images/new_room1.mp4</em>.</p>
         </div>
         <div style="grid-column: 1 / -1;">
           <label>Alt Text</label>
-          <input data-field="alt" value="${escapeHtml(image.alt || '')}" placeholder="Describe the image" />
+          <input data-field="alt" value="${escapeHtml(image.alt || '')}" placeholder="Describe the image or video" />
         </div>
       </div>
       <div class="actions">
@@ -167,7 +167,7 @@ function isValidHttpUrl(value) {
 }
 
 function isValidAssetPath(value) {
-  return /^\/assets\/images\/[^?#]+\.(avif|webp|jpe?g|png|gif)$/i.test(value);
+  return /^\/assets\/images\/[^?#]+\.(avif|webp|jpe?g|png|gif|mp4|webm|ogg|mov)$/i.test(value);
 }
 
 function isValidImageSource(value) {

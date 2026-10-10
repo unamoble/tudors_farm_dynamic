@@ -2147,7 +2147,8 @@ body[data-page='contact'] .contact-map {
   transition: background 300ms var(--transition);
 }
 
-.gallery-grid__item img {
+.gallery-grid__item img,
+.gallery-grid__item video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -2156,7 +2157,8 @@ body[data-page='contact'] .contact-map {
   transition: transform 420ms var(--transition);
 }
 
-.gallery-grid__item:hover img {
+.gallery-grid__item:hover img,
+.gallery-grid__item:hover video {
   transform: scale(1.12);
 }
 
