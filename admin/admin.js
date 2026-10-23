@@ -1,4 +1,5 @@
 const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/unamoble/tudors_farm_dynamic/main/data';
+const GALLERY_CATEGORIES = ['Night', 'Day', 'Pool', 'Guests', 'Rooms', 'Nature', 'Dining'];
 
 const state = {
   loggedIn: false,
@@ -125,6 +126,16 @@ function galleryTemplate(image, index) {
           <label>Alt Text</label>
           <input data-field="alt" value="${escapeHtml(image.alt || '')}" placeholder="Describe the image or video" />
         </div>
+        <div>
+          <label>Categories</label>
+          <input data-field="categories" value="${escapeHtml(Array.isArray(image.categories) ? image.categories.join(', ') : '')}" placeholder="Pool, Day" />
+          <p style="margin:6px 0 0; color:#556; font-size:0.9rem;">Use: ${GALLERY_CATEGORIES.join(', ')}. Separate multiple categories with commas.</p>
+        </div>
+        <div>
+          <label>Date Added (optional)</label>
+          <input data-field="dateAdded" type="date" value="${escapeHtml(image.dateAdded || '')}" />
+          <p style="margin:6px 0 0; color:#556; font-size:0.9rem;">Recent sorts by this date when every item has one; otherwise source order is used.</p>
+        </div>
       </div>
       <div class="actions">
         <button type="button" class="small-btn warn" data-action="delete-gallery">Delete Image</button>
@@ -151,7 +162,9 @@ function collectCardData(selector) {
   return Array.from(document.querySelectorAll(selector)).map((card) => {
     const payload = {};
     card.querySelectorAll('[data-field]').forEach((field) => {
-      payload[field.dataset.field] = field.value.trim();
+      payload[field.dataset.field] = field.dataset.field === 'categories'
+        ? field.value.split(',').map((item) => item.trim()).filter(Boolean)
+        : field.value.trim();
     });
     return payload;
   });
@@ -273,7 +286,7 @@ function bindEditorEvents() {
   });
 
   byId('add-gallery-btn').addEventListener('click', () => {
-    state.gallery.push({ url: '', alt: '' });
+    state.gallery.push({ url: '', alt: '', categories: [] });
     renderGallery();
   });
 

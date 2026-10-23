@@ -87,6 +87,7 @@
             </aside>
 
             <div class="gallery-showcase__content">
+              <div class="gallery-filters" data-gallery-filters aria-label="Filter gallery by category"></div>
               <div id="gallery-grid" class="section-grid section-grid--gallery section-grid--gallery-page"></div>
             </div>
           </div>
@@ -115,6 +116,8 @@
     <script type="module">
       import {
         createGalleryModal,
+        filterGalleryImages,
+        GALLERY_CATEGORIES,
         loadSiteData,
         renderGalleryGrid,
         renderSiteChrome
@@ -124,12 +127,39 @@
         try {
           const { config, gallery } = await loadSiteData();
           renderSiteChrome({ page: 'gallery', config });
-          renderGalleryGrid(document.getElementById('gallery-grid'), gallery, {
-            clickable: true
+          const galleryGrid = document.getElementById('gallery-grid');
+          const filters = document.querySelector('[data-gallery-filters]');
+          let activeCategory = 'Guests';
+
+          const renderFilteredGallery = () => {
+            renderGalleryGrid(galleryGrid, filterGalleryImages(gallery, activeCategory), {
+              clickable: true
+            });
+          };
+
+          filters.innerHTML = GALLERY_CATEGORIES.map((category) => `
+            <button
+              class="gallery-filters__chip${category === activeCategory ? ' is-active' : ''}"
+              type="button"
+              aria-pressed="${category === activeCategory}"
+              data-gallery-category="${category}"
+            >${category}</button>
+          `).join('');
+          filters.addEventListener('click', (event) => {
+            const button = event.target.closest('[data-gallery-category]');
+            if (!button) return;
+            activeCategory = button.dataset.galleryCategory;
+            filters.querySelectorAll('[data-gallery-category]').forEach((chip) => {
+              const isActive = chip === button;
+              chip.classList.toggle('is-active', isActive);
+              chip.setAttribute('aria-pressed', String(isActive));
+            });
+            renderFilteredGallery();
           });
+          renderFilteredGallery();
 
           const modal = createGalleryModal();
-          document.getElementById('gallery-grid')?.addEventListener('click', (event) => {
+          galleryGrid?.addEventListener('click', (event) => {
             const button = event.target.closest('[data-gallery-url]');
             if (!button) return;
             modal.open({ url: button.dataset.galleryUrl, alt: button.dataset.galleryAlt });

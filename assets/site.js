@@ -13,6 +13,8 @@ const FALLBACK_SITE_TITLE = 'Tudor Farm Cottages | Rohini Tea Garden, Kurseong';
 const FALLBACK_WHATSAPP_NUMBER = '919932588052';
 const SITE_SUSPENDED = false; // Set to true to simulate a suspended site for testing
 
+export const GALLERY_CATEGORIES = ['Recent', 'Night', 'Day', 'Pool', 'Guests', 'Rooms', 'Nature', 'Dining'];
+
 export function renderSuspensionNotice() {
   if (!SITE_SUSPENDED || typeof document === 'undefined') {
     return false;
@@ -478,6 +480,33 @@ function isVideoUrl(value = '') {
   return /\.(mp4|webm|ogg|mov)(?:[?#].*)?$/i.test(String(value).trim());
 }
 
+export function filterGalleryImages(images, category = 'Recent') {
+  const sourceImages = Array.isArray(images) ? images.filter((image) => image?.url) : [];
+
+  if (category === 'Recent') {
+    const hasCompleteDates = sourceImages.length > 0 && sourceImages.every((image) => {
+      return image.dateAdded && !Number.isNaN(Date.parse(image.dateAdded));
+    });
+
+    if (hasCompleteDates) {
+      return sourceImages
+        .map((image, index) => ({ image, index }))
+        .sort((a, b) => {
+          const dateDifference = Date.parse(b.image.dateAdded) - Date.parse(a.image.dateAdded);
+          return dateDifference || a.index - b.index;
+        })
+        .map(({ image }) => image);
+    }
+
+    return sourceImages;
+  }
+
+  return sourceImages.filter((image) => (
+    Array.isArray(image.categories) &&
+    image.categories.some((item) => String(item).toLowerCase() === category.toLowerCase())
+  ));
+}
+
 export function galleryTileMarkup(image, { clickable = false, index = 0 } = {}) {
   const alt = escapeHtml(image.alt || 'Gallery media');
   const url = escapeHtml(image.url || '');
@@ -518,10 +547,11 @@ export function renderGalleryGrid(container, images, { limit = images.length, cl
     clickable
   });
 
-  container.innerHTML = validImages
+  const tiles = validImages
     .slice(0, limit)
     .map((image, index) => galleryTileMarkup(image, { clickable, index }))
     .join('');
+  container.innerHTML = tiles || '<p class="gallery-empty" role="status">No gallery photos match this category yet.</p>';
   initRevealAnimations();
 }
 

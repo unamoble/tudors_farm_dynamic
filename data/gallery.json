@@ -1,162 +1,300 @@
 [
   {
     "url": "/assets/images/exterior_view.jpeg",
-    "alt": "Exterior view of Tudor Farm Cottages"
+    "alt": "Exterior view of Tudor Farm Cottages",
+    "categories": [
+      "Day",
+      "Nature"
+    ]
   },
   {
     "url": "/assets/images/exterior_view2.jpeg",
-    "alt": "Cottage exterior surrounded by greenery"
+    "alt": "Cottage exterior surrounded by greenery",
+    "categories": [
+      "Day",
+      "Nature"
+    ]
   },
   {
     "url": "/assets/images/exterior_view3.jpeg",
-    "alt": "Hillside cottage view from the property"
+    "alt": "Hillside cottage view from the property",
+    "categories": [
+      "Day",
+      "Nature"
+    ]
   },
   {
     "url": "/assets/images/cottage_1.jpeg",
-    "alt": "Tudor Farm cottage building"
+    "alt": "Tudor Farm cottage building",
+    "categories": [
+      "Day",
+      "Nature"
+    ]
   },
   {
     "url": "/assets/images/Gate.jpeg",
-    "alt": "Entrance gate at Tudor Farm Cottages"
+    "alt": "Entrance gate at Tudor Farm Cottages",
+    "categories": [
+      "Day",
+      "Nature"
+    ]
   },
   {
     "url": "/assets/images/view.jpeg",
-    "alt": "Open hillside view from the farm"
+    "alt": "Open hillside view from the farm",
+    "categories": [
+      "Day",
+      "Nature"
+    ]
   },
   {
     "url": "/assets/images/room1.jpeg",
-    "alt": "Guest room with warm cottage interiors"
+    "alt": "Guest room with warm cottage interiors",
+    "categories": [
+      "Day",
+      "Rooms"
+    ]
   },
   {
     "url": "/assets/images/room2.jpeg",
-    "alt": "Comfortable cottage room with natural light"
+    "alt": "Comfortable cottage room with natural light",
+    "categories": [
+      "Day",
+      "Rooms"
+    ]
   },
   {
     "url": "/assets/images/room3.jpeg",
-    "alt": "Bedroom arranged for a relaxed stay"
+    "alt": "Bedroom arranged for a relaxed stay",
+    "categories": [
+      "Day",
+      "Rooms"
+    ]
   },
   {
     "url": "/assets/images/room4.jpeg",
-    "alt": "Cottage room detail at Tudor Farm"
+    "alt": "Cottage room detail at Tudor Farm",
+    "categories": [
+      "Day",
+      "Rooms"
+    ]
   },
   {
     "url": "/assets/images/toilet.jpeg",
-    "alt": "Clean private bathroom for guests"
+    "alt": "Clean private bathroom for guests",
+    "categories": [
+      "Day",
+      "Rooms"
+    ]
   },
   {
     "url": "/assets/images/swimming_pool_day.jpeg",
-    "alt": "Swimming pool during the day"
+    "alt": "Swimming pool during the day",
+    "categories": [
+      "Day",
+      "Pool"
+    ]
   },
   {
     "url": "/assets/images/pool_day2.jpeg",
-    "alt": "Daytime pool area at the cottages"
+    "alt": "Daytime pool area at the cottages",
+    "categories": [
+      "Day",
+      "Pool"
+    ]
   },
   {
     "url": "/assets/images/swimming_pool_night.jpeg",
-    "alt": "Swimming pool lit up at night"
+    "alt": "Swimming pool lit up at night",
+    "categories": [
+      "Night",
+      "Pool"
+    ]
   },
   {
     "url": "/assets/images/pool_night.jpeg",
-    "alt": "Night view of the pool area"
+    "alt": "Night view of the pool area",
+    "categories": [
+      "Night",
+      "Pool"
+    ]
   },
   {
     "url": "/assets/images/night_view.jpeg",
-    "alt": "Night view around Tudor Farm Cottages"
+    "alt": "Night view around Tudor Farm Cottages",
+    "categories": [
+      "Night"
+    ]
   },
   {
     "url": "/assets/images/duck.jpeg",
-    "alt": "Ducks around the farm property"
+    "alt": "Ducks around the farm property",
+    "categories": [
+      "Day",
+      "Nature"
+    ]
   },
   {
     "url": "/assets/images/duck2.jpeg",
-    "alt": "Farm ducks near the cottages"
+    "alt": "Farm ducks near the cottages",
+    "categories": [
+      "Day",
+      "Nature"
+    ]
   },
   {
     "url": "/assets/images/guest%205.mp4",
-    "alt": "Guest video at Tudor Farm Cottages"
+    "alt": "Guest video at Tudor Farm Cottages",
+    "categories": [
+      "Guests"
+    ]
   },
   {
     "url": "/assets/images/guest1.mp4",
-    "alt": "Guest experience video around the cottages"
+    "alt": "Guest experience video around the cottages",
+    "categories": [
+      "Guests"
+    ]
   },
   {
     "url": "/assets/images/guest8.mp4",
-    "alt": "Short guest video showing the scenic stay"
+    "alt": "Short guest video showing the scenic stay",
+    "categories": [
+      "Guests"
+    ]
   },
   {
     "url": "/assets/images/new_night.mp4",
-    "alt": "Evening video of the property lighting and ambience"
+    "alt": "Evening video of the property lighting and ambience",
+    "categories": [
+      "Night"
+    ]
   },
   {
     "url": "/assets/images/new_room1.mp4",
-    "alt": "Interior room video after the latest cottage update"
+    "alt": "Interior room video after the latest cottage update",
+    "categories": [
+      "Rooms"
+    ]
   },
   {
     "url": "/assets/images/new_room2.mp4",
-    "alt": "Second room video showing the cozy cottage interior"
+    "alt": "Second room video showing the cozy cottage interior",
+    "categories": [
+      "Rooms"
+    ]
   },
   {
     "url": "/assets/images/night_video.mp4",
-    "alt": "Night ambience video from the cottages"
+    "alt": "Night ambience video from the cottages",
+    "categories": [
+      "Night"
+    ]
   },
   {
     "url": "/assets/images/guest2.jpeg",
-    "alt": "Guest photo from the cottage stay"
+    "alt": "Guest photo from the cottage stay",
+    "categories": [
+      "Guests"
+    ]
   },
   {
     "url": "/assets/images/guest3.jpeg",
-    "alt": "Guest moment captured at Tudor Farm Cottages"
+    "alt": "Guest moment captured at Tudor Farm Cottages",
+    "categories": [
+      "Guests"
+    ]
   },
   {
     "url": "/assets/images/guest4.jpeg",
-    "alt": "Guest photo showing the scenic property"
+    "alt": "Guest photo showing the scenic property",
+    "categories": [
+      "Guests"
+    ]
   },
   {
     "url": "/assets/images/guest5.jpeg",
-    "alt": "A warm, relaxed guest photo from the stay"
+    "alt": "A warm, relaxed guest photo from the stay",
+    "categories": [
+      "Guests"
+    ]
   },
   {
     "url": "/assets/images/guest6.jpeg",
-    "alt": "Guest photo featuring the peaceful cottage setting"
+    "alt": "Guest photo featuring the peaceful cottage setting",
+    "categories": [
+      "Guests"
+    ]
   },
   {
     "url": "/assets/images/guest7.jpeg",
-    "alt": "Guest memory captured outdoors at the cottages"
+    "alt": "Guest memory captured outdoors at the cottages",
+    "categories": [
+      "Guests"
+    ]
   },
   {
     "url": "/assets/images/new_nice.jpeg",
-    "alt": "New scenic photo of the cottage property"
+    "alt": "New scenic photo of the cottage property",
+    "categories": [
+      "Day",
+      "Nature"
+    ]
   },
   {
     "url": "/assets/images/new_night.jpeg",
-    "alt": "New night photo of the property ambience"
+    "alt": "New night photo of the property ambience",
+    "categories": [
+      "Night"
+    ]
   },
   {
     "url": "/assets/images/new_night1.jpeg",
-    "alt": "Nighttime cottage scene from the latest photo set"
+    "alt": "Nighttime cottage scene from the latest photo set",
+    "categories": [
+      "Night"
+    ]
   },
   {
     "url": "/assets/images/new_night2.jpeg",
-    "alt": "Another evening view of the cottages"
+    "alt": "Another evening view of the cottages",
+    "categories": [
+      "Night"
+    ]
   },
   {
     "url": "/assets/images/new_night3.jpeg",
-    "alt": "New evening photo from the hillside location"
+    "alt": "New evening photo from the hillside location",
+    "categories": [
+      "Night"
+    ]
   },
   {
     "url": "/assets/images/new_night4.jpeg",
-    "alt": "Warm evening glow around the cottage property"
+    "alt": "Warm evening glow around the cottage property",
+    "categories": [
+      "Night"
+    ]
   },
   {
     "url": "/assets/images/new_night5.jpeg",
-    "alt": "Late-evening view of the cottages at night"
+    "alt": "Late-evening view of the cottages at night",
+    "categories": [
+      "Night"
+    ]
   },
   {
     "url": "/assets/images/new_night6.jpeg",
-    "alt": "Quiet night scene around Tudor Farm Cottages"
+    "alt": "Quiet night scene around Tudor Farm Cottages",
+    "categories": [
+      "Night"
+    ]
   },
   {
     "url": "/assets/images/new_night7.jpeg",
-    "alt": "Final night photo from the recent property update"
+    "alt": "Final night photo from the recent property update",
+    "categories": [
+      "Night"
+    ]
   }
 ]
