@@ -14,6 +14,13 @@ const FALLBACK_WHATSAPP_NUMBER = '919932588052';
 const SITE_SUSPENDED = false; // Set to true to simulate a suspended site for testing
 
 export const GALLERY_CATEGORIES = ['Recent', 'Night', 'Day', 'Pool', 'Guests', 'Rooms', 'Nature', 'Dining'];
+export const ROOM_MEDIA_BY_SLUG = {
+  'cottage-room-one': '/assets/images/Roomvideo1.mp4',
+  'cottage-room-two': '/assets/images/Roomvideo2.mp4',
+  'cottage-room-three': '/assets/images/Roomvideo3.mp4',
+  'cottage-room-four': '/assets/images/Roomvideo4.mp4'
+};
+let roomVideoPlaybackBound = false;
 
 export function renderSuspensionNotice() {
   if (!SITE_SUSPENDED || typeof document === 'undefined') {
@@ -413,18 +420,53 @@ export function initRevealAnimations() {
   targets.forEach((element) => observer.observe(element));
 }
 
-export function roomCardMarkup(room, whatsappNumber, { large = false } = {}) {
+export function roomMediaItems(room, roomName = room.name || 'Cottage') {
+  const video = ROOM_MEDIA_BY_SLUG[room.slug];
+  return [
+    { type: 'image', url: room.image || '', alt: roomName },
+    { type: 'video', url: video || '', alt: `${roomName} video` }
+  ].filter((media) => media.url);
+}
+
+export function roomCarouselMarkup(room, roomName = room.name || 'Cottage', { detail = false } = {}) {
+  const mediaItems = roomMediaItems(room, roomName);
+  const serializedMedia = escapeHtml(JSON.stringify(mediaItems));
+
+  return `
+    <div class="room-carousel${detail ? ' room-carousel--detail' : ''}" data-room-carousel data-room-media="${serializedMedia}">
+      <div class="room-carousel__viewport" data-room-viewport tabindex="0" aria-label="${roomName} photos and video">
+        <div class="room-carousel__track" data-room-track>
+          ${mediaItems.map((media, index) => `
+            <div class="room-carousel__slide" data-room-slide aria-hidden="${index !== 0}">
+              ${media.type === 'video'
+                ? `<video src="${escapeHtml(media.url)}" poster="${escapeHtml(room.image || '')}" aria-label="${escapeHtml(media.alt)}" controls muted playsinline preload="metadata">Your browser does not support this video.</video><span class="room-carousel__video-indicator" aria-hidden="true">Video</span>`
+                : `<img src="${escapeHtml(media.url)}" alt="${escapeHtml(media.alt)}" loading="lazy" />`
+              }
+            </div>
+          `).join('')}
+        </div>
+        <button class="room-carousel__expand" type="button" data-room-expand aria-label="Open ${roomName} media viewer">Expand</button>
+        <button class="room-carousel__control room-carousel__control--previous" type="button" data-room-previous aria-label="Previous ${roomName} media">&#8249;</button>
+        <button class="room-carousel__control room-carousel__control--next" type="button" data-room-next aria-label="Next ${roomName} media">&#8250;</button>
+        <span class="room-carousel__counter" data-room-counter aria-live="polite">1 / ${mediaItems.length}</span>
+      </div>
+    </div>
+  `;
+}
+
+export function roomCardMarkup(room, whatsappNumber, { large = false, carousel = false } = {}) {
   const roomName = escapeHtml(room.name || 'Cottage');
   const description = escapeHtml(room.description || '');
   const price = escapeHtml(room.price || '');
   const capacity = escapeHtml(room.capacity || '');
   const image = escapeHtml(room.image || '');
   const bookingLink = buildWhatsAppLink(whatsappNumber, `Hi, I want to book ${room.name || 'a room'}`);
+  const detailHref = `/room.html?room=${encodeURIComponent(room.slug || '')}`;
 
   if (large) {
     return `
       <article class="card room-card reveal">
-        <img class="room-card__media" src="${image}" alt="${roomName}" loading="lazy" />
+        ${carousel ? roomCarouselMarkup(room, roomName) : `<img class="room-card__media" src="${image}" alt="${roomName}" loading="lazy" />`}
         <div class="room-card__body">
           <h3 class="room-card__title">${roomName}</h3>
           <div class="room-card__meta">
@@ -433,7 +475,10 @@ export function roomCardMarkup(room, whatsappNumber, { large = false } = {}) {
           </div>
           <p class="room-card__copy">${description}</p>
           <p class="room-card__price">${price}</p>
-          <a class="btn btn--dark" href="${bookingLink}" target="_blank" rel="noopener noreferrer">Book this room</a>
+          <div class="feature-card__actions">
+            <a class="btn btn--dark" href="${detailHref}">View details</a>
+            <a class="btn btn--primary" href="${bookingLink}" target="_blank" rel="noopener noreferrer">Book this room</a>
+          </div>
         </div>
       </article>
     `;
@@ -441,7 +486,7 @@ export function roomCardMarkup(room, whatsappNumber, { large = false } = {}) {
 
   return `
     <article class="feature-card reveal">
-      <img class="feature-card__media" src="${image}" alt="${roomName}" loading="lazy" />
+      ${carousel ? roomCarouselMarkup(room, roomName) : `<img class="feature-card__media" src="${image}" alt="${roomName}" loading="lazy" />`}
       <div class="feature-card__body">
         <div class="feature-card__meta">
           <span class="feature-card__eyebrow">Handpicked stay</span>
@@ -454,7 +499,7 @@ export function roomCardMarkup(room, whatsappNumber, { large = false } = {}) {
           <span class="pill">${price}</span>
         </div>
         <div class="feature-card__actions">
-          <a class="btn btn--dark" href="/rooms.html">View rooms</a>
+          <a class="btn btn--dark" href="${detailHref}">View details</a>
           <a class="btn btn--primary" href="${bookingLink}" target="_blank" rel="noopener noreferrer">Book now</a>
         </div>
       </div>
@@ -462,7 +507,186 @@ export function roomCardMarkup(room, whatsappNumber, { large = false } = {}) {
   `;
 }
 
-export function renderRoomCards(container, rooms, whatsappNumber, { limit = rooms.length, large = false } = {}) {
+export function initRoomCarousels(container, viewer) {
+  if (!container) return;
+
+  if (!roomVideoPlaybackBound) {
+    document.addEventListener('play', (event) => {
+      document.querySelectorAll('video').forEach((video) => {
+        if (video !== event.target) video.pause();
+      });
+    }, true);
+    roomVideoPlaybackBound = true;
+  }
+
+  container.querySelectorAll('[data-room-carousel]').forEach((carousel) => {
+    const viewport = carousel.querySelector('[data-room-viewport]');
+    const track = carousel.querySelector('[data-room-track]');
+    const slides = Array.from(carousel.querySelectorAll('[data-room-slide]'));
+    const counter = carousel.querySelector('[data-room-counter]');
+    const mediaItems = JSON.parse(carousel.dataset.roomMedia || '[]');
+    let activeIndex = 0;
+    let pointerStart = null;
+    let suppressClick = false;
+
+    const pauseVideos = () => {
+      carousel.querySelectorAll('video').forEach((video) => video.pause());
+    };
+
+    const showSlide = (index) => {
+      activeIndex = (index + slides.length) % slides.length;
+      track.style.transform = `translateX(-${activeIndex * 100}%)`;
+      slides.forEach((slide, slideIndex) => {
+        slide.setAttribute('aria-hidden', String(slideIndex !== activeIndex));
+      });
+      if (counter) counter.textContent = `${activeIndex + 1} / ${slides.length}`;
+      pauseVideos();
+    };
+
+    carousel.querySelector('[data-room-previous]')?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      showSlide(activeIndex - 1);
+    });
+    carousel.querySelector('[data-room-next]')?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      showSlide(activeIndex + 1);
+    });
+    carousel.querySelector('[data-room-expand]')?.addEventListener('click', () => {
+      viewer?.open(mediaItems, activeIndex);
+    });
+    viewport?.addEventListener('pointerdown', (event) => {
+      if (event.target.closest('video, button')) return;
+      pointerStart = event.clientX;
+    });
+    viewport?.addEventListener('pointerup', (event) => {
+      if (pointerStart === null) return;
+      const distance = event.clientX - pointerStart;
+      pointerStart = null;
+      if (Math.abs(distance) > 45) {
+        suppressClick = true;
+        showSlide(activeIndex + (distance < 0 ? 1 : -1));
+      }
+    });
+    viewport?.addEventListener('pointercancel', () => { pointerStart = null; });
+    viewport?.addEventListener('click', (event) => {
+      if (event.target.closest('video, button')) return;
+      if (suppressClick) {
+        suppressClick = false;
+        return;
+      }
+      viewer?.open(mediaItems, activeIndex);
+    });
+    viewport?.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') showSlide(activeIndex - 1);
+      if (event.key === 'ArrowRight') showSlide(activeIndex + 1);
+    });
+  });
+}
+
+export function createRoomMediaViewer() {
+  let modal = document.querySelector('[data-room-media-modal]');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.className = 'modal room-media-modal';
+    modal.hidden = true;
+    modal.dataset.roomMediaModal = '';
+    modal.innerHTML = `
+      <div class="room-media-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="room-media-modal-title">
+        <div class="room-media-modal__stage">
+          <button class="room-media-modal__close" type="button" data-room-media-modal-close aria-label="Close media viewer">Close</button>
+          <button class="room-media-modal__control room-media-modal__control--previous" type="button" data-room-modal-previous aria-label="Previous room media">&#8249;</button>
+          <div class="room-media-modal__media-wrap" data-room-modal-media></div>
+          <button class="room-media-modal__control room-media-modal__control--next" type="button" data-room-modal-next aria-label="Next room media">&#8250;</button>
+        </div>
+        <div class="room-media-modal__footer"><p id="room-media-modal-title" data-room-modal-title></p><span data-room-modal-counter aria-live="polite"></span></div>
+      </div>`;
+    document.body.append(modal);
+  }
+  const mediaContainer = modal?.querySelector('[data-room-modal-media]');
+  const title = modal?.querySelector('[data-room-modal-title]');
+  const counter = modal?.querySelector('[data-room-modal-counter]');
+  const previous = modal?.querySelector('[data-room-modal-previous]');
+  const next = modal?.querySelector('[data-room-modal-next]');
+  const closeButton = modal?.querySelector('[data-room-media-modal-close]');
+  let items = [];
+  let activeIndex = 0;
+  let lastFocusedElement = null;
+
+  const pauseMedia = () => mediaContainer?.querySelectorAll('video').forEach((video) => video.pause());
+  const render = () => {
+    if (!mediaContainer || !items.length) return;
+    pauseMedia();
+    mediaContainer.replaceChildren();
+    const media = items[activeIndex];
+    const element = document.createElement(media.type === 'video' ? 'video' : 'img');
+    element.src = media.url;
+    element.alt = media.alt || '';
+    element.className = 'room-media-modal__media';
+    if (media.type === 'video') {
+      element.controls = true;
+      element.muted = true;
+      element.playsInline = true;
+      element.preload = 'metadata';
+    }
+    mediaContainer.append(element);
+    if (title) title.textContent = media.alt || '';
+    if (counter) counter.textContent = `${activeIndex + 1} / ${items.length}`;
+  };
+  const move = (offset) => {
+    activeIndex = (activeIndex + offset + items.length) % items.length;
+    render();
+  };
+  const close = () => {
+    if (!modal) return;
+    pauseMedia();
+    modal.hidden = true;
+    document.body.classList.remove('menu-open');
+    lastFocusedElement?.focus();
+  };
+  const open = (nextItems, index = 0) => {
+    if (!modal || !nextItems?.length) return;
+    items = nextItems;
+    activeIndex = Math.max(0, Math.min(index, items.length - 1));
+    lastFocusedElement = document.activeElement;
+    render();
+    modal.hidden = false;
+    document.body.classList.add('menu-open');
+    closeButton?.focus();
+  };
+
+  previous?.addEventListener('click', () => move(-1));
+  next?.addEventListener('click', () => move(1));
+  closeButton?.addEventListener('click', close);
+  modal?.addEventListener('click', (event) => {
+    if (event.target === modal) close();
+  });
+  window.addEventListener('keydown', (event) => {
+    if (modal?.hidden) return;
+    if (event.key === 'Escape') {
+      close();
+      return;
+    }
+    if (event.key === 'ArrowLeft') move(-1);
+    if (event.key === 'ArrowRight') move(1);
+    if (event.key === 'Tab') {
+      const focusable = [...modal.querySelectorAll('button:not([disabled]), video[controls]')];
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (!first || !last) return;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  });
+
+  return { open, close };
+}
+
+export function renderRoomCards(container, rooms, whatsappNumber, { limit = rooms.length, large = false, carousel = false } = {}) {
   if (!container) return;
 
   console.debug('[tudors] renderRoomCards', {
@@ -472,7 +696,27 @@ export function renderRoomCards(container, rooms, whatsappNumber, { limit = room
     large
   });
 
-  container.innerHTML = rooms.slice(0, limit).map((room) => roomCardMarkup(room, whatsappNumber, { large })).join('');
+  container.innerHTML = rooms.slice(0, limit).map((room) => roomCardMarkup(room, whatsappNumber, { large, carousel })).join('');
+  initRevealAnimations();
+}
+
+export function renderRoomDetail(container, room, whatsappNumber) {
+  if (!container || !room) return;
+  const roomName = escapeHtml(room.name || 'Cottage');
+  const bookingLink = buildWhatsAppLink(whatsappNumber, `Hi, I want to book ${room.name || 'a room'}`);
+  container.innerHTML = `
+    <div class="room-detail__breadcrumbs"><a href="/rooms.html">Rooms</a><span aria-hidden="true">/</span><span>${roomName}</span></div>
+    <div class="room-detail__layout">
+      ${roomCarouselMarkup(room, roomName, { detail: true })}
+      <div class="room-detail__content">
+        <p class="eyebrow">Cottage stay</p>
+        <h1>${roomName}</h1>
+        <p class="room-detail__copy">${escapeHtml(room.description || '')}</p>
+        <div class="room-card__meta"><span class="pill">${escapeHtml(room.capacity || '')}</span><span class="pill">Handpicked cottage</span></div>
+        <p class="room-card__price">${escapeHtml(room.price || '')}</p>
+        <div class="feature-card__actions"><a class="btn btn--primary" href="${bookingLink}" target="_blank" rel="noopener noreferrer">Book this room</a><a class="btn btn--dark" href="/rooms.html">All rooms</a></div>
+      </div>
+    </div>`;
   initRevealAnimations();
 }
 

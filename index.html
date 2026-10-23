@@ -271,9 +271,26 @@
       </svg>
     </a>
 
+    <div class="modal room-media-modal" data-room-media-modal hidden>
+      <div class="room-media-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="room-media-modal-title">
+        <div class="room-media-modal__stage">
+          <button class="room-media-modal__close" type="button" data-room-media-modal-close aria-label="Close media viewer">Close</button>
+          <button class="room-media-modal__control room-media-modal__control--previous" type="button" data-room-modal-previous aria-label="Previous room media">&#8249;</button>
+          <div class="room-media-modal__media-wrap" data-room-modal-media></div>
+          <button class="room-media-modal__control room-media-modal__control--next" type="button" data-room-modal-next aria-label="Next room media">&#8250;</button>
+        </div>
+        <div class="room-media-modal__footer">
+          <p id="room-media-modal-title" data-room-modal-title></p>
+          <span data-room-modal-counter aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
     <script type="module">
       import {
         buildWhatsAppLink,
+        createRoomMediaViewer,
+        initRoomCarousels,
         loadSiteData,
         renderGalleryGrid,
         renderRoomCards,
@@ -290,9 +307,11 @@
             aboutPreview.textContent = config.aboutText;
           }
           renderRoomCards(document.getElementById('home-rooms'), rooms, config.whatsappNumber, {
-            limit: 3,
-            large: false
+            limit: 4,
+            large: false,
+            carousel: true
           });
+          initRoomCarousels(document.getElementById('home-rooms'), createRoomMediaViewer());
           renderGalleryGrid(document.getElementById('home-gallery'), gallery, {
             limit: 6,
             clickable: false

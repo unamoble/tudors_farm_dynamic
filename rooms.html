@@ -104,15 +104,17 @@
     </a>
 
     <script type="module">
-      import { loadSiteData, renderRoomCards, renderSiteChrome } from '/assets/site.js';
+      import { createRoomMediaViewer, initRoomCarousels, loadSiteData, renderRoomCards, renderSiteChrome } from '/assets/site.js';
 
       async function init() {
         try {
           const { config, rooms } = await loadSiteData();
           renderSiteChrome({ page: 'rooms', config });
           renderRoomCards(document.getElementById('rooms-grid'), rooms, config.whatsappNumber, {
-            large: true
+            large: true,
+            carousel: true
           });
+          initRoomCarousels(document.getElementById('rooms-grid'), createRoomMediaViewer());
         } catch (error) {
           console.error(error);
           const roomsGrid = document.getElementById('rooms-grid');
