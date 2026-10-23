@@ -804,6 +804,16 @@ export function createGalleryModal() {
   let modalMedia = modal?.querySelector('[data-gallery-modal-image]');
   const modalTitle = modal?.querySelector('[data-gallery-modal-title]');
   const closeButton = modal?.querySelector('[data-gallery-modal-close]');
+  const previous = modal?.querySelector('[data-gallery-modal-previous]');
+  const next = modal?.querySelector('[data-gallery-modal-next]');
+  const stage = modal?.querySelector('[data-gallery-modal-stage]');
+  let items = [];
+  let activeIndex = 0;
+  let pointerStart = null;
+
+  const pauseMedia = () => {
+    if (modalMedia?.tagName === 'VIDEO') modalMedia.pause();
+  };
 
   function ensureVideoElement() {
     if (!modal || !modalMedia || modalMedia.tagName === 'VIDEO') {
@@ -835,8 +845,11 @@ export function createGalleryModal() {
     return modalMedia;
   }
 
-  function open(image) {
+  function render() {
     if (!modal || !modalMedia || !modalTitle) return;
+    const image = items[activeIndex];
+    if (!image) return;
+    pauseMedia();
 
     if (isVideoUrl(image.url)) {
       modalMedia = ensureVideoElement();
@@ -851,12 +864,30 @@ export function createGalleryModal() {
     }
 
     modalTitle.textContent = image.alt || '';
+  }
+
+  function move(offset) {
+    if (!items.length) return;
+    activeIndex = (activeIndex + offset + items.length) % items.length;
+    render();
+  }
+
+  function open(image, nextItems = [image], index = 0) {
+    if (!modal || !modalMedia || !modalTitle) return;
+    items = nextItems.filter((item) => item?.url);
+    if (!items.length) return;
+    activeIndex = Number.isInteger(index) && index >= 0 && index < items.length
+      ? index
+      : Math.max(0, items.findIndex((item) => item.url === image.url));
+    render();
     modal.hidden = false;
     document.body.classList.add('menu-open');
+    closeButton?.focus();
   }
 
   function close() {
     if (!modal || !modalMedia || !modalTitle) return;
+    pauseMedia();
     modal.hidden = true;
     modalMedia.removeAttribute('src');
     if (modalMedia.tagName === 'IMG') {
@@ -867,12 +898,28 @@ export function createGalleryModal() {
   }
 
   closeButton?.addEventListener('click', close);
+  previous?.addEventListener('click', () => move(-1));
+  next?.addEventListener('click', () => move(1));
   modal?.addEventListener('click', (event) => {
     if (event.target === modal) close();
   });
   window.addEventListener('keydown', (event) => {
+    if (modal?.hidden) return;
     if (event.key === 'Escape') close();
+    if (event.key === 'ArrowLeft') move(-1);
+    if (event.key === 'ArrowRight') move(1);
   });
+  stage?.addEventListener('pointerdown', (event) => {
+    if (event.target.closest('video, button')) return;
+    pointerStart = event.clientX;
+  });
+  stage?.addEventListener('pointerup', (event) => {
+    if (pointerStart === null) return;
+    const distance = event.clientX - pointerStart;
+    pointerStart = null;
+    if (Math.abs(distance) > 45) move(distance < 0 ? 1 : -1);
+  });
+  stage?.addEventListener('pointercancel', () => { pointerStart = null; });
 
   return { open, close };
 }

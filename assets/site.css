@@ -898,6 +898,7 @@ body[data-page='gallery'] .page-section--gallery-page > * {
 
 .gallery-showcase__intro,
 .gallery-showcase__content {
+  min-width: 0;
   position: relative;
   border: 1px solid rgba(41, 74, 58, 0.12);
   border-radius: 28px;
@@ -971,8 +972,10 @@ body[data-page='gallery'] .gallery-showcase__content {
 
 .gallery-filters {
   display: flex;
+  box-sizing: border-box;
   gap: 0.55rem;
   width: 100%;
+  max-width: 100%;
   margin-bottom: 1.1rem;
   overflow-x: auto;
   overscroll-behavior-inline: contain;
@@ -1077,6 +1080,9 @@ body[data-page='gallery'] .gallery-grid__caption {
   background: rgba(17, 25, 19, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.14);
   backdrop-filter: blur(6px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .section-grid--split {
@@ -2590,6 +2596,95 @@ body[data-page='contact'] .contact-map {
   color: var(--forest);
 }
 
+/* Gallery viewer has its own media-fit rules; card thumbnails still use cover. */
+[data-gallery-modal] .modal__dialog {
+  display: flex;
+  width: min(980px, 100%);
+  max-height: calc(100svh - 2rem);
+  flex-direction: column;
+  background: #111913;
+}
+
+.gallery-modal__stage {
+  position: relative;
+  display: grid;
+  box-sizing: border-box;
+  height: min(72svh, 720px);
+  min-height: 0;
+  flex: 1 1 auto;
+  place-items: center;
+  padding: 1.25rem 3.5rem;
+}
+
+.gallery-modal__media-wrap {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  place-items: center;
+}
+
+[data-gallery-modal] .modal__media {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.gallery-modal__control {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  padding: 0;
+  color: #fff;
+  background: rgba(17, 25, 19, 0.65);
+  font-size: 2rem;
+  line-height: 1;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.gallery-modal__control--previous {
+  left: 0.8rem;
+}
+
+.gallery-modal__control--next {
+  right: 0.8rem;
+}
+
+.gallery-modal__control:focus-visible {
+  outline: 3px solid rgba(176, 139, 90, 0.75);
+  outline-offset: 2px;
+}
+
+[data-gallery-modal] .modal__footer {
+  flex: 0 0 auto;
+  color: #fff;
+  background: #111913;
+}
+
+[data-gallery-modal] .modal__title {
+  min-width: 0;
+  overflow: hidden;
+  color: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-gallery-modal] .modal-close {
+  flex: 0 0 auto;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
 @media (min-width: 700px) {
   .section-grid--gallery {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2893,6 +2988,68 @@ body[data-page='contact'] .contact-map {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  body[data-page='gallery'] .page-section--gallery-page::before {
+    inset: 2.5rem 0 1rem;
+    border-radius: 24px;
+  }
+
+  body[data-page='gallery'] .gallery-showcase__intro {
+    padding: 1.25rem;
+  }
+
+  body[data-page='gallery'] .gallery-showcase__content {
+    padding: 0.75rem;
+  }
+
+  .gallery-filters {
+    gap: 0.45rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.35rem;
+  }
+
+  .gallery-filters__chip {
+    min-height: 2.6rem;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.78rem;
+  }
+
+  .section-grid--gallery-page {
+    gap: 0.7rem;
+  }
+
+  body[data-page='gallery'] .gallery-grid__item {
+    border-radius: 18px;
+  }
+
+  .gallery-modal__stage {
+    height: min(68svh, 620px);
+    padding: 1rem 2.8rem;
+  }
+
+  .gallery-modal__control {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .gallery-modal__control--previous {
+    left: 0.45rem;
+  }
+
+  .gallery-modal__control--next {
+    right: 0.45rem;
+  }
+
+  [data-gallery-modal] .modal__footer {
+    flex-direction: row;
+    align-items: center;
+    padding: 0.75rem 0.9rem 0.9rem;
+  }
+
+  [data-gallery-modal] .modal-close {
+    min-height: 2.5rem;
+    padding: 0.6rem 0.8rem;
+  }
+
   .modal__footer {
     flex-direction: column;
     align-items: flex-start;
@@ -2970,5 +3127,16 @@ body[data-page='contact'] .contact-map {
 
   .section-grid--home-gallery {
     gap: 0.8rem;
+  }
+}
+
+@media (max-width: 359px) {
+  .section-grid--gallery-page {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-modal__stage {
+    padding-right: 2.55rem;
+    padding-left: 2.55rem;
   }
 }

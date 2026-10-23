@@ -105,7 +105,13 @@
 
     <div class="modal" data-gallery-modal hidden>
       <div class="modal__dialog" role="dialog" aria-modal="true" aria-label="Gallery image preview">
-        <img class="modal__media" data-gallery-modal-image src="" alt="" />
+        <div class="gallery-modal__stage" data-gallery-modal-stage>
+          <button class="gallery-modal__control gallery-modal__control--previous" type="button" data-gallery-modal-previous aria-label="Previous gallery media">&#8249;</button>
+          <div class="gallery-modal__media-wrap">
+            <img class="modal__media" data-gallery-modal-image src="" alt="" />
+          </div>
+          <button class="gallery-modal__control gallery-modal__control--next" type="button" data-gallery-modal-next aria-label="Next gallery media">&#8250;</button>
+        </div>
         <div class="modal__footer">
           <p class="modal__title" data-gallery-modal-title></p>
           <button class="modal-close" type="button" data-gallery-modal-close>Close</button>
@@ -131,8 +137,10 @@
           const filters = document.querySelector('[data-gallery-filters]');
           let activeCategory = 'Guests';
 
+          let visibleGallery = [];
           const renderFilteredGallery = () => {
-            renderGalleryGrid(galleryGrid, filterGalleryImages(gallery, activeCategory), {
+            visibleGallery = filterGalleryImages(gallery, activeCategory);
+            renderGalleryGrid(galleryGrid, visibleGallery, {
               clickable: true
             });
           };
@@ -155,6 +163,11 @@
               chip.setAttribute('aria-pressed', String(isActive));
             });
             renderFilteredGallery();
+            button.scrollIntoView({
+              block: 'nearest',
+              inline: 'nearest',
+              behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+            });
           });
           renderFilteredGallery();
 
@@ -162,7 +175,11 @@
           galleryGrid?.addEventListener('click', (event) => {
             const button = event.target.closest('[data-gallery-url]');
             if (!button) return;
-            modal.open({ url: button.dataset.galleryUrl, alt: button.dataset.galleryAlt });
+            modal.open(
+              { url: button.dataset.galleryUrl, alt: button.dataset.galleryAlt },
+              visibleGallery,
+              Number(button.dataset.galleryIndex)
+            );
           });
         } catch (error) {
           console.error(error);
