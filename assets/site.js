@@ -439,7 +439,7 @@ export function roomCarouselMarkup(room, roomName = room.name || 'Cottage', { de
           ${mediaItems.map((media, index) => `
             <div class="room-carousel__slide" data-room-slide aria-hidden="${index !== 0}">
               ${media.type === 'video'
-                ? `<video src="${escapeHtml(media.url)}" poster="${escapeHtml(room.image || '')}" aria-label="${escapeHtml(media.alt)}" controls muted playsinline preload="metadata">Your browser does not support this video.</video><span class="room-carousel__video-indicator" aria-hidden="true">Video</span>`
+                ? `<video src="${escapeHtml(media.url)}" poster="${escapeHtml(room.image || '')}" aria-label="${escapeHtml(media.alt)}" controls muted playsinline webkit-playsinline preload="metadata">Your browser does not support this video.</video><button class="room-carousel__play" type="button" data-room-video-toggle aria-label="Play ${escapeHtml(media.alt)}" aria-pressed="false"><span aria-hidden="true">&#9658;</span><span data-room-video-toggle-label>Play</span></button><span class="room-carousel__video-indicator" aria-hidden="true">Video</span>`
                 : `<img src="${escapeHtml(media.url)}" alt="${escapeHtml(media.alt)}" loading="lazy" />`
               }
             </div>
@@ -516,6 +516,11 @@ export function initRoomCarousels(container, viewer) {
         if (video !== event.target) video.pause();
       });
     }, true);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        document.querySelectorAll('[data-room-carousel] video').forEach((video) => video.pause());
+      }
+    });
     roomVideoPlaybackBound = true;
   }
 
@@ -532,6 +537,50 @@ export function initRoomCarousels(container, viewer) {
     const pauseVideos = () => {
       carousel.querySelectorAll('video').forEach((video) => video.pause());
     };
+
+    const updateVideoToggle = (video, state = video.paused ? 'paused' : 'playing') => {
+      const toggle = video.parentElement?.querySelector('[data-room-video-toggle]');
+      const label = toggle?.querySelector('[data-room-video-toggle-label]');
+      if (!toggle || !label) return;
+      const isPlaying = state === 'playing';
+      toggle.hidden = isPlaying;
+      toggle.setAttribute('aria-pressed', String(isPlaying));
+      if (state === 'error') {
+        label.textContent = 'Try again';
+        toggle.setAttribute('aria-label', `Unable to play ${video.getAttribute('aria-label') || 'room video'}. Try again`);
+      } else {
+        label.textContent = isPlaying ? 'Pause' : 'Play';
+        toggle.setAttribute('aria-label', `${isPlaying ? 'Pause' : 'Play'} ${video.getAttribute('aria-label') || 'room video'}`);
+      }
+    };
+
+    const toggleInlineVideo = async (video) => {
+      if (!video) return;
+      if (!video.paused) {
+        video.pause();
+        return;
+      }
+      try {
+        await video.play();
+      } catch (error) {
+        console.warn('[tudors] inline room video could not play', error);
+        updateVideoToggle(video, 'error');
+      }
+    };
+
+    carousel.querySelectorAll('video').forEach((video) => {
+      video.addEventListener('play', () => updateVideoToggle(video, 'playing'));
+      video.addEventListener('pause', () => updateVideoToggle(video, 'paused'));
+      video.addEventListener('ended', () => updateVideoToggle(video, 'paused'));
+      video.addEventListener('error', () => updateVideoToggle(video, 'error'));
+      updateVideoToggle(video);
+    });
+    carousel.querySelectorAll('[data-room-video-toggle]').forEach((toggle) => {
+      toggle.addEventListener('click', (event) => {
+        event.stopPropagation();
+        toggleInlineVideo(toggle.parentElement?.querySelector('video'));
+      });
+    });
 
     const showSlide = (index) => {
       activeIndex = (index + slides.length) % slides.length;
@@ -626,6 +675,7 @@ export function createRoomMediaViewer() {
       element.controls = true;
       element.muted = true;
       element.playsInline = true;
+      element.setAttribute('webkit-playsinline', 'true');
       element.preload = 'metadata';
     }
     mediaContainer.append(element);

@@ -1487,6 +1487,31 @@ body[data-page='gallery'] .gallery-grid__caption {
   font-weight: 800;
 }
 
+.room-carousel__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  padding: 0.55rem 0.85rem;
+  color: #fff;
+  background: rgba(17, 25, 19, 0.76);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.room-carousel__play:hover {
+  background: rgba(41, 74, 58, 0.92);
+}
+
 .room-carousel__control:hover,
 .room-carousel__expand:hover {
   background: rgba(41, 74, 58, 0.88);
@@ -1494,6 +1519,7 @@ body[data-page='gallery'] .gallery-grid__caption {
 
 .room-carousel__control:focus-visible,
 .room-carousel__expand:focus-visible,
+.room-carousel__play:focus-visible,
 .room-media-modal__control:focus-visible,
 .room-media-modal__close:focus-visible {
   outline: 3px solid rgba(176, 139, 90, 0.75);
